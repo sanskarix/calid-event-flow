@@ -19,6 +19,10 @@ interface HeaderProps {
 }
 
 export const Header = ({ metaData }: HeaderProps) => {
+  // Defensive check to ensure metaData is defined
+  if (!metaData) {
+    return null;
+  }
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showHelpDropdown, setShowHelpDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,7 +69,7 @@ export const Header = ({ metaData }: HeaderProps) => {
         {/* Left section: Back button, title, and optional description */}
         <div className="flex flex-col justify-center space-y-1">
           <div className="flex items-center space-x-4">
-            {metaData.enabled !== undefined && (
+            {metaData && metaData.enabled !== undefined && (
               <button
                 onClick={() => navigate('/event-types')}
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -88,7 +92,7 @@ export const Header = ({ metaData }: HeaderProps) => {
 
         {/* Right section: Toggle, Save, Profile */}
         <div className="flex items-center space-x-2 ml-auto">
-          {metaData.enabled !== undefined && metaData.onEnabledChange && (
+          {metaData && metaData.enabled !== undefined && metaData.onEnabledChange && (
             <>
               <div className="flex items-center space-x-2">
                 <TooltipProvider delayDuration={0}>

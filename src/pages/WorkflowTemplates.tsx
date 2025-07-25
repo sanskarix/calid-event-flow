@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Plus, Mail, MessageSquare, ArrowLeft } from 'lucide-react';
+import { Plus, Mail, MessageSquare, ArrowLeft, MessageCircle } from 'lucide-react';
 import { HeaderMeta } from '@/components/Layout';
 
 const workflowTemplates = [
@@ -42,7 +42,7 @@ const workflowTemplates = [
     iconColor: 'text-yellow-600'
   },
   {
-    id: 'text-reminder-host',
+    id: 'whatsapp-reminder-guests',
     title: 'WhatsApp reminder to guests',
     description: 'Never miss an event — set automated text reminders',
     icon: MessageCircle,
@@ -73,9 +73,9 @@ export const WorkflowTemplates = () => {
     <div className="p-4">
       <div className="px-8 pt-6 pb-6 space-y-4 w-full max-w-full">
         <div className="flex items-center space-x-4 mb-8">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => navigate('/workflows')}
             className="gap-2"
           >
@@ -86,10 +86,10 @@ export const WorkflowTemplates = () => {
             <h1 className="text-2xl font-semibold">Choose a workflow template</h1>
           </div>
         </div>
-        
+
         <div className="space-y-6">
           <div className="text-center">
-            <Button 
+            <Button
               onClick={handleCreateCustomWorkflow}
               className="gap-2"
             >
@@ -97,11 +97,11 @@ export const WorkflowTemplates = () => {
               Build your own Workflow
             </Button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {workflowTemplates.map((template) => (
-              <div 
-                key={template.id} 
+              <div
+                key={template.id}
                 className="bg-card border border-border rounded-lg p-6 hover:border-border/60 transition-all hover:shadow-sm cursor-pointer"
                 onClick={() => handleTemplateSelect(template)}
               >

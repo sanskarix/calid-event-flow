@@ -4,7 +4,7 @@ import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { Separator } from '../../../components/ui/separator';
+
 import { Plus, Trash2 } from 'lucide-react';
 export const TeamBookingLimits = () => {
   const {
@@ -37,17 +37,15 @@ export const TeamBookingLimits = () => {
       [field]: value
     } : limit));
   };
-  return <div className="space-y-6 mx-[24px]">
-      <div>
-        <h3 className="text-lg font-medium">Booking Limits</h3>
-        <p className="text-sm text-muted-foreground">
-          Control how many bookings can be made for your team
-        </p>
-      </div>
+  return <div className="min-h-screen bg-background flex justify-center">
+      <div className="p-8 max-w-4xl w-full">
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-semibold mb-2">Booking Limits</h1>
+          <p className="text-muted-foreground">Control how many bookings can be made for your team</p>
+        </div>
 
-      <Separator />
-
-      <div className="space-y-4">
+        <div className="border rounded-lg p-6 bg-card">
+          <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h4 className="text-base font-medium">Add booking limits</h4>
@@ -90,13 +88,15 @@ export const TeamBookingLimits = () => {
         {limits.length === 0 && <div className="text-center py-8 text-muted-foreground">
             <p className="text-sm">No booking limits set. Click "Add limit" to create one.</p>
           </div>}
-      </div>
+          </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-end">
-        <Button onClick={handleSave}>
-          Save Changes
-        </Button>
+          {/* Action Buttons */}
+          <div className="flex justify-end">
+            <Button onClick={handleSave}>
+              Save Changes
+            </Button>
+          </div>
+        </div>
       </div>
     </div>;
 };

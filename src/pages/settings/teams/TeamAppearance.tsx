@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 
 export const TeamAppearance = () => {
@@ -14,15 +13,15 @@ export const TeamAppearance = () => {
   const [hideBranding, setHideBranding] = useState(false);
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Team Appearance</CardTitle>
-          <CardDescription>
-            Customize how your team's booking pages look to your users.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+    <div className="min-h-screen bg-background flex justify-center">
+      <div className="p-8 max-w-4xl w-full">
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-semibold mb-2">Team Appearance</h1>
+          <p className="text-muted-foreground">Customize how your team's booking pages look to your users</p>
+        </div>
+
+        <div className="border rounded-lg p-6 bg-card">
+          <div className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="brand-color">Brand Color</Label>
             <div className="flex space-x-2">
@@ -75,9 +74,10 @@ export const TeamAppearance = () => {
             </Select>
           </div>
 
-          <Button>Save Changes</Button>
-        </CardContent>
-      </Card>
+            <Button>Save Changes</Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

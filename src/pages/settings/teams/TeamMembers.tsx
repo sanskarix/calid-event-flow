@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/button';
@@ -55,8 +54,8 @@ export const TeamMembers = () => {
 
   return (
     <div className="min-h-screen bg-background flex justify-center animate-fade-in">
-      <div className="p-8 max-w-6xl w-full">
-        <div className="mb-8">
+      <div className="p-8 max-w-4xl w-full">
+        <div className="mb-8 text-center">
           <h1 className="text-2xl font-semibold mb-2">Members</h1>
           <p className="text-muted-foreground">Manage your team members and their permissions</p>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
-import { Users, MoreHorizontal, Edit, ExternalLink, UserPlus, Trash2 } from 'lucide-react';
+import { Users, MoreHorizontal, Edit, ExternalLink, UserPlus, Trash2, Clock } from 'lucide-react';
 import { CreateTeamModal } from '../components/CreateTeamModal';
 import { TeamCard } from '../components/TeamCard';
 import { useNavigate } from 'react-router-dom';
@@ -101,31 +101,49 @@ export const Teams = () => {
           <div className="space-y-4">
             {teams.map((team, index) => (
               <div key={team.id} className="bg-card border border-border rounded-lg p-4 hover:border-border/60 transition-all hover:shadow-sm cursor-pointer">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-3 flex-1">
-                    <div className="h-10 w-10 rounded-lg bg-muted/50 flex items-center justify-center flex-shrink-0 hover:bg-muted/70 transition-colors group/icon">
-                      <Users className="h-5 w-5 group-hover/icon:scale-110 transition-transform" style={{color: '#6366f1'}} />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3 flex-1">
+                    <div
+                      className="h-10 w-10 rounded-lg bg-muted/50 flex items-center justify-center flex-shrink-0 hover:bg-muted/70 transition-colors group/icon cursor-pointer"
+                      style={{ backgroundColor: '#6366f1' }}
+                    >
+                      <Users className="h-5 w-5 text-white group-hover/icon:scale-110 transition-transform" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center mb-2 space-x-3">
+                      <div className="flex items-center space-x-3 mb-1">
                         <h3 className="font-semibold text-foreground text-base">{team.name}</h3>
                         <div className="relative flex items-center space-x-1 px-2 py-1 bg-muted/50 rounded text-xs text-muted-foreground">
                           <span>cal.id/team/{team.url}</span>
                         </div>
                       </div>
-                      <div className="flex items-center">
+                      <p className="text-sm text-muted-foreground">Team collaboration and scheduling</p>
+                      <div className="flex items-center mt-2">
                         <span className="inline-flex items-center px-2 py-1 bg-muted text-foreground text-xs rounded mr-2">
                           <Users className="h-3 w-3 mr-1" />
                           Team
                         </span>
+                        <div className="flex items-center text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3 mr-1" />
+                          <span>Active</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2 ml-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => window.open(`https://cal.id/team/${team.url}`, '_blank')}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </div>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="p-2 hover:bg-muted rounded-lg transition-colors">
-                          <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
+                        <Button variant="ghost" size="icon" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground hover:bg-muted">
+                          <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
