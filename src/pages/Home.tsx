@@ -125,6 +125,81 @@ const Home = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Bookings Overview Chart */}
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="text-xl font-semibold flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              Bookings Trend
+            </CardTitle>
+            <CardDescription>Daily bookings over the past 15 days</CardDescription>
+          </div>
+          <Button variant="outline" size="sm">
+            <Calendar className="h-4 w-4 mr-2" />
+            Last 30 days
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={mockBookingData}>
+                <XAxis 
+                  dataKey="date" 
+                  tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  className="text-sm"
+                />
+                <YAxis className="text-sm" />
+                <ChartTooltip 
+                  content={<ChartTooltipContent />}
+                  labelFormatter={(value) => new Date(value).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="bookings" 
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth={3}
+                  dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: 'hsl(var(--primary))' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      {/* Quick Actions Panel */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
+          <CardDescription>Get started with common tasks</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <TooltipProvider>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {quickActions.map((action, index) => (
+                <Tooltip key={index}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="h-20 flex flex-col items-center justify-center gap-2 hover:bg-accent"
+                      onClick={action.onClick}
+                    >
+                      <action.icon className="h-6 w-6" />
+                      <span className="text-xs text-center">{action.label}</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{action.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
+        </CardContent>
+      </Card>
+
       {/* Footer */}
       <div className="flex justify-center">
         <Button 
