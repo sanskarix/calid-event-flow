@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Gift } from 'lucide-react';
+import { Gift, Sparkles, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const ClaimPro = () => {
@@ -21,87 +21,114 @@ const ClaimPro = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Claim Pro for 2 Years</h1>
-        <p className="text-muted-foreground mt-2">
-          Claim Cal ID's pro version for the next 2 years for free
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
+        {/* Header Section */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-4">
+            <Sparkles className="w-10 h-10 text-primary" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+            Claim Pro for 2 Years
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Claim Cal ID's pro version for the next 2 years for free
+          </p>
+        </div>
 
-      <div className="grid gap-6 max-w-4xl mx-auto">
-        <Card className="border-2 hover:border-primary/50 transition-colors">
-          <CardHeader className="text-center pb-4">
-            <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <Gift className="w-8 h-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl">First Year Pro Access</CardTitle>
-            <CardDescription className="text-base">
-              Unlock all premium features for your first year
-            </CardDescription>
+        {/* Claim Cards */}
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* First Year Card */}
+          <Card className="relative overflow-hidden border-2 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardHeader className="text-center pb-6 pt-8 relative">
+              <div className="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                <Gift className="w-10 h-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl font-bold mb-2">First Year Pro</CardTitle>
+              <CardDescription className="text-base">
+                Unlock all premium features
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center pb-8 relative">
+              <Button 
+                size="lg" 
+                className="w-full h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+                onClick={handleClaimFirstYear}
+              >
+                Claim First Year
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Second Year Card */}
+          <Card className="relative overflow-hidden border-2 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <CardHeader className="text-center pb-6 pt-8 relative">
+              <div className="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                <Gift className="w-10 h-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl font-bold mb-2">Second Year Pro</CardTitle>
+              <CardDescription className="text-base">
+                Continue your premium access
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center pb-8 relative">
+              <Button 
+                size="lg" 
+                className="w-full h-14 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+                onClick={handleClaimSecondYear}
+              >
+                Claim Second Year
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Features Section */}
+        <Card className="bg-gradient-to-br from-card to-muted/30 border-2">
+          <CardHeader className="pb-6">
+            <CardTitle className="text-xl font-bold flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              What's included in Pro?
+            </CardTitle>
           </CardHeader>
-          <CardContent className="text-center pb-8">
-            <Button 
-              size="lg" 
-              className="w-full max-w-md h-14 text-lg font-semibold"
-              onClick={handleClaimFirstYear}
-            >
-              Claim First Year
-            </Button>
+          <CardContent>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium">Unlimited event types and bookings</span>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium">Advanced calendar integrations</span>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium">Custom workflows and automations</span>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium">Priority support and analytics</span>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-background/50 transition-colors sm:col-span-2">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-medium">Team collaboration features</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
-
-        <Card className="border-2 hover:border-primary/50 transition-colors">
-          <CardHeader className="text-center pb-4">
-            <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-              <Gift className="w-8 h-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl">Second Year Pro Access</CardTitle>
-            <CardDescription className="text-base">
-              Continue with all premium features for your second year
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center pb-8">
-            <Button 
-              size="lg" 
-              className="w-full max-w-md h-14 text-lg font-semibold"
-              onClick={handleClaimSecondYear}
-            >
-              Claim Second Year
-            </Button>
-          </CardContent>
-        </Card>
       </div>
-
-      <Card className="max-w-4xl mx-auto bg-muted/50">
-        <CardHeader>
-          <CardTitle className="text-lg">What's included in Pro?</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="flex items-start gap-2">
-              <span className="text-primary mt-0.5">✓</span>
-              <span>Unlimited event types and bookings</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary mt-0.5">✓</span>
-              <span>Advanced calendar integrations</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary mt-0.5">✓</span>
-              <span>Custom workflows and automations</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary mt-0.5">✓</span>
-              <span>Priority support and analytics</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-primary mt-0.5">✓</span>
-              <span>Team collaboration features</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
     </div>
   );
 };
