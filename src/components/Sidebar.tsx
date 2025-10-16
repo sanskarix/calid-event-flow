@@ -1,6 +1,6 @@
 
 import { NavLink } from 'react-router-dom';
-import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing } from 'lucide-react';
+import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing, Gift } from 'lucide-react';
 
 interface SidebarProps {
   darkMode: boolean;
@@ -56,6 +56,11 @@ export const Sidebar = ({
       name: 'Insights',
       href: '/insights',
       icon: ChartNoAxesColumnIncreasing
+    },
+    {
+      name: 'Claim Pro for 2 Years',
+      href: '/claim-pro',
+      icon: Gift
     },
     {
       name: 'Settings',
