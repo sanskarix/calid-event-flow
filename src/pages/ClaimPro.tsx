@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Gift, Sparkles, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import BlackFridayModal from '@/components/BlackFridayModal';
 
 const ClaimPro = () => {
   const { toast } = useToast();
   const [firstYearClaimed, setFirstYearClaimed] = useState(false);
+  const [showBlackFridayModal, setShowBlackFridayModal] = useState(false);
+
+  useEffect(() => {
+    // Show modal on page load
+    setShowBlackFridayModal(true);
+  }, []);
 
   const handleClaimFirstYear = () => {
     setFirstYearClaimed(true);
@@ -23,7 +30,20 @@ const ClaimPro = () => {
     });
   };
 
+  const handleBlackFridayClaim = () => {
+    toast({
+      title: "Black Friday Offer Claimed!",
+      description: "You've successfully claimed 2 years of Cal ID Pro for free!",
+    });
+  };
+
   return (
+    <>
+      <BlackFridayModal 
+        open={showBlackFridayModal} 
+        onOpenChange={setShowBlackFridayModal}
+        onClaim={handleBlackFridayClaim}
+      />
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
         {/* Header Section */}
@@ -144,6 +164,7 @@ const ClaimPro = () => {
         </Card>
       </div>
     </div>
+    </>
   );
 };
 
