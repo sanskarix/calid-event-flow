@@ -40,12 +40,12 @@ const ClaimPro = () => {
         </div>
 
         {/* Claim Cards */}
-        <div className="relative max-w-md mx-auto h-[400px]">
+        <div className="relative max-w-2xl mx-auto h-[440px]">
           {/* Second Year Card - Behind */}
-          <Card className={`absolute inset-0 overflow-hidden border-2 transition-all duration-700 ${
+          <Card className={`absolute left-1/2 -translate-x-1/2 w-[90%] overflow-hidden border-2 transition-all duration-700 ease-in-out ${
             firstYearClaimed 
-              ? 'translate-y-0 z-20 border-primary/50 shadow-xl opacity-100' 
-              : 'translate-y-4 z-10 opacity-60 blur-[2px]'
+              ? 'top-0 scale-100 z-20 border-primary/50 shadow-2xl opacity-100 rotate-0' 
+              : 'top-6 scale-95 z-10 opacity-70 rotate-[-1deg]'
           }`}>
             <div className={`absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent transition-opacity ${
               firstYearClaimed ? 'opacity-100' : 'opacity-0'
@@ -72,10 +72,10 @@ const ClaimPro = () => {
           </Card>
 
           {/* First Year Card - Front */}
-          <Card className={`absolute inset-0 overflow-hidden border-2 hover:border-primary/50 hover:shadow-xl transition-all duration-700 ${
+          <Card className={`absolute left-1/2 -translate-x-1/2 w-full overflow-hidden border-2 hover:border-primary/50 hover:shadow-2xl transition-all duration-700 ease-in-out ${
             firstYearClaimed 
-              ? '-translate-y-full opacity-0 pointer-events-none scale-95' 
-              : 'translate-y-0 z-20 opacity-100'
+              ? 'top-[120%] scale-95 opacity-0 pointer-events-none z-10 rotate-[2deg]' 
+              : 'top-0 scale-100 z-20 opacity-100 rotate-0 shadow-2xl'
           } group`}>
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="text-center pb-6 pt-8 relative">
