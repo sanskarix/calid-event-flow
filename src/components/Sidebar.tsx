@@ -1,6 +1,7 @@
 
 import { NavLink } from 'react-router-dom';
-import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing, Gift } from 'lucide-react';
+import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing, Gift, Crown } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface SidebarProps {
   darkMode: boolean;
@@ -102,6 +103,24 @@ export const Sidebar = ({
       
       {/* Bottom section */}
       <div className="px-4 py-4 space-y-3">
+        {/* Pro Plan Indicator */}
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <Crown className="h-4 w-4 text-primary" />
+            <Badge variant="default" className="text-xs">PRO PLAN</Badge>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Active until{' '}
+            <span className="font-medium text-foreground">
+              {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+              })}
+            </span>
+          </p>
+        </div>
+
         {/* Footer links */}
         <div className="space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center justify-center space-x-2">
