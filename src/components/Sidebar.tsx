@@ -104,21 +104,29 @@ export const Sidebar = ({
       {/* Bottom section */}
       <div className="px-4 py-4 space-y-3">
         {/* Pro Plan Indicator */}
-        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <Crown className="h-4 w-4 text-primary" />
-            <Badge variant="default" className="text-xs">PRO PLAN</Badge>
+        <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/30 rounded-xl p-3 overflow-hidden shadow-sm">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-50"></div>
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="p-1 bg-primary/20 rounded-md">
+                  <Crown className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <span className="text-xs font-semibold text-primary tracking-wide">PRO PLAN</span>
+              </div>
+              <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-5 bg-primary/10 text-primary border-0">ACTIVE</Badge>
+            </div>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Expires{' '}
+              <span className="font-semibold text-foreground">
+                {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                })}
+              </span>
+            </p>
           </div>
-          <p className="text-xs text-muted-foreground">
-            Active until{' '}
-            <span className="font-medium text-foreground">
-              {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric' 
-              })}
-            </span>
-          </p>
         </div>
 
         {/* Footer links */}
