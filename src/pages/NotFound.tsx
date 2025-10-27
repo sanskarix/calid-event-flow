@@ -75,7 +75,7 @@ const NotFound = () => {
                 size="lg"
                 className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-gray-100/90 text-gray-800 hover:bg-gray-200/90 transition-all shadow-sm hover:shadow-md"
               >
-                Go to cal.id
+                Go to Cal ID
               </Button>
             </div>
           </div>
