@@ -58,7 +58,7 @@ const NotFound = () => {
                 cal.id/{slug}
               </span>{" "}
               is still available
-              <br> claim it before someone else does! >
+              <br> claim it before someone else does! </br>
             </p>
 
             {/* Buttons (stacked vertically) */}
