@@ -38,11 +38,7 @@ const NotFound = () => {
         <Card className="relative w-full bg-white/85 backdrop-blur-md border border-white/40 rounded-3xl shadow-[0_10px_45px_rgba(7,11,20,0.06)] overflow-hidden">
           <div className="flex flex-col items-center text-center px-10 py-16 space-y-8">
             {/* Illustration */}
-            <img
-              src="https://illustrations.popsy.co/gray/mountain.svg"
-              alt="Mountain Illustration"
-              className="w-56 h-56 object-contain opacity-95"
-            />
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-flag-icon lucide-flag"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" /></svg>
 
             {/* Headline */}
             <h1 className="text-5xl md:text-6xl font-semibold tracking-tight text-gray-900">
@@ -75,7 +71,7 @@ const NotFound = () => {
                 size="lg"
                 className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-gray-100/90 text-gray-800 hover:bg-gray-200/90 transition-all shadow-sm hover:shadow-md"
               >
-                Go to cal.id
+                Go to Cal ID
               </Button>
             </div>
           </div>
