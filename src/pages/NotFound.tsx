@@ -52,14 +52,14 @@ const NotFound = () => {
 
             {/* Subtext */}
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-md">
-              Looks like{" "}
+              {" "}
               <span
                 className="font-mono font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
                 onClick={handleClaimCalId}
               >
                 cal.id/{slug}
               </span>{" "}
-              hasn’t been claimed yet.
+              is still available!
             </p>
 
             {/* Buttons (stacked vertically) */}
