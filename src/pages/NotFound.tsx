@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Home, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
 
 const NotFound = () => {
   const location = useLocation();
@@ -57,7 +56,7 @@ const NotFound = () => {
               </h1>
               <p className="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
                 Looks like <span className="font-semibold text-gray-800">cal.id/{slug}</span> isn’t
-                taken — but it could be yours in seconds.
+                taken ��� but it could be yours in seconds.
               </p>
             </div>
 
