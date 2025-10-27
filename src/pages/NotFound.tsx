@@ -3,14 +3,16 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Home, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const slug = location.pathname.replace(/^\//, '') || 'username';
+
+  const slug = location.pathname.replace(/^\//, "") || "username";
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    console.error("404 Error: User attempted to access:", location.pathname);
   }, [location.pathname]);
 
   const handleClaimCalId = () => {
@@ -22,69 +24,55 @@ const NotFound = () => {
       className="min-h-screen flex items-center justify-center px-6 py-12"
       style={{
         background:
-          "linear-gradient(hsla(213,100%,97%,1), hsla(229,100%,97%,1), hsla(270,100%,98%,1))",
+          "linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))",
       }}
     >
-      <div className="animate-in fade-in slide-in-from-bottom-6 duration-600">
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <Card
-          className="relative max-w-xl w-full overflow-hidden bg-white/90 dark:bg-gray-950/90 border border-gray-100 rounded-3xl backdrop-blur-xl"
-          style={{
-            boxShadow: "0 12px 40px rgba(0, 0, 0, 0.06)",
-          }}
+          className="relative max-w-lg w-full bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.05)]"
         >
-          <div className="relative text-center space-y-10 p-10 md:p-16">
-            {/* Illustration or emoji */}
-            <div className="flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-600 delay-200">
-              <div className="bg-gradient-to-br from-primary/10 to-primary/20 p-5 rounded-full">
-                <Sparkles className="h-8 w-8 text-primary" />
-              </div>
-            </div>
+          <div className="text-center px-8 py-14 space-y-8">
+            {/* Emoji/Icon header */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="flex justify-center"
+            >
+              <Sparkles className="h-10 w-10 text-primary/80" />
+            </motion.div>
 
-            {/* Title and subtext */}
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
-                Nothing's here yet!
-              </h1>
-              <p className="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
-                Looks like <span className="font-semibold text-gray-800">cal.id/{slug}</span> isn't
-                taken — but it could be yours in seconds.
+            {/* Headline */}
+            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900">
+              Nothing’s here yet ✨
+            </h1>
+
+            {/* Availability message */}
+            <div className="space-y-2">
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+                <span className="inline-block font-mono text-primary font-medium bg-white/70 px-4 py-1.5 rounded-xl border border-primary/20 shadow-sm">
+                  cal.id/{slug}
+                </span>{" "}
+                is available
+              </p>
+              <p className="text-base text-gray-600">
+                Grab your Cal ID before someone else does.
               </p>
             </div>
 
-            {/* Slug availability */}
-            <div className="space-y-3">
-              <p className="text-base md:text-lg text-gray-700 font-medium">
-                Secure your Cal ID before someone else does 👀
-              </p>
-              <p className="inline-block font-mono text-primary font-semibold bg-primary/5 px-5 py-2 rounded-lg border border-primary/20 shadow-sm">
-                cal.id/{slug}
-              </p>
-            </div>
-
-            {/* CTA buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <div className="transition-transform duration-200 hover:scale-105 active:scale-95 w-full sm:w-auto">
-                <Button
-                  onClick={handleClaimCalId}
-                  size="lg"
-                  className="w-full sm:w-auto shadow-lg hover:shadow-xl transition-all relative"
-                  style={{
-                    boxShadow:
-                      "0 0 0 0 rgba(0,118,229,0.4)",
-                    transition: "box-shadow 0.3s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                  (e.currentTarget.style.boxShadow =
-                    "0 0 20px 2px rgba(0,118,229,0.25)")
-                  }
-                  onMouseLeave={(e) =>
-                  (e.currentTarget.style.boxShadow =
-                    "0 0 0 0 rgba(0,118,229,0.4)")
-                  }
-                >
-                  Claim my Cal ID
-                </Button>
-              </div>
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+              <Button
+                onClick={handleClaimCalId}
+                size="lg"
+                className="w-full sm:w-auto px-6 shadow-lg hover:shadow-xl transition-all bg-primary text-white"
+              >
+                Claim my Cal ID
+              </Button>
 
               <Button
                 variant="ghost"
@@ -96,14 +84,9 @@ const NotFound = () => {
                 Go home
               </Button>
             </div>
-
-            {/* Subtle footer note */}
-            <p className="text-xs text-gray-400 pt-6">
-              Cal ID — free scheduling made simple.
-            </p>
           </div>
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 };
