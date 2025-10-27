@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Home } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -35,14 +34,14 @@ const NotFound = () => {
         .fade-up { animation: fadeUp 600ms cubic-bezier(.2,.9,.2,1) both; }
       `}</style>
 
-      <div className="fade-up max-w-2xl w-full">
-        <Card className="relative w-full bg-white/80 backdrop-blur-md border border-white/40 rounded-3xl shadow-[0_10px_45px_rgba(7,11,20,0.06)] overflow-hidden">
-          <div className="flex flex-col items-center text-center px-10 py-14 space-y-8">
+      <div className="fade-up max-w-2xl w-full scale-110">
+        <Card className="relative w-full bg-white/85 backdrop-blur-md border border-white/40 rounded-3xl shadow-[0_10px_45px_rgba(7,11,20,0.06)] overflow-hidden">
+          <div className="flex flex-col items-center text-center px-10 py-16 space-y-8">
             {/* Illustration */}
             <img
-              src="https://illustrations.popsy.co/gray/error-404.svg"
-              alt="Not Found Illustration"
-              className="w-48 h-48 object-contain opacity-90"
+              src="https://illustrations.popsy.co/gray/mountain.svg"
+              alt="Mountain Illustration"
+              className="w-56 h-56 object-contain opacity-95"
             />
 
             {/* Headline */}
@@ -52,14 +51,13 @@ const NotFound = () => {
 
             {/* Subtext */}
             <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-md">
-              {" "}
               <span
-                className="font-mono font-medium text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+                className="font-semibold text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
                 onClick={handleClaimCalId}
               >
                 cal.id/{slug}
               </span>{" "}
-              is still available!
+              is still available — claim it before someone else does!
             </p>
 
             {/* Buttons (stacked vertically) */}
@@ -75,9 +73,8 @@ const NotFound = () => {
               <Button
                 onClick={() => navigate("/")}
                 size="lg"
-                className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-gray-100/90 text-gray-800 hover:bg-gray-200/90 transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+                className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-gray-100/90 text-gray-800 hover:bg-gray-200/90 transition-all shadow-sm hover:shadow-md"
               >
-                <Home className="h-5 w-5" />
                 Go to cal.id
               </Button>
             </div>
