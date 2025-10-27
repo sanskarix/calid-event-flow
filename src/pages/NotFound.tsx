@@ -59,7 +59,9 @@ const NotFound = () => {
               </span>{" "}
               is still available 
             </p>
-            <br> claim it before someone else does! </br>
+            <br>  </br>
+            <p>
+              claim it before someone else does!</p>
 
             {/* Buttons (stacked vertically) */}
             <div className="flex flex-col gap-4 w-full sm:w-2/3 pt-4">
