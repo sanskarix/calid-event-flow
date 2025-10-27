@@ -11,7 +11,24 @@ const NotFound = () => {
   const slug = location.pathname.replace(/^\//, "") || "username";
 
   useEffect(() => {
-    console.error("404 Error: User attempted to access:", location.pathname);
+    const msg = `404: User attempted to access: ${location.pathname}`;
+
+    // DEV-only console message (less noisy than console.error)
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(msg);
+    } else {
+      // OPTIONAL: forward 404s to your analytics/monitoring in production.
+      // Set window.__REPORT_404__ = (path) => { /* send to Sentry/GA */ } somewhere in your app.
+      if (typeof window !== "undefined" && typeof window.__REPORT_404__ === "function") {
+        try {
+          window.__REPORT_404__(location.pathname);
+        } catch (e) {
+          // swallow any reporting errors to avoid spamming the console
+          // eslint-disable-next-line no-console
+          console.debug("Failed to report 404:", e);
+        }
+      }
+    }
   }, [location.pathname]);
 
   const handleClaimCalId = () => {
@@ -26,7 +43,6 @@ const NotFound = () => {
           "linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))",
       }}
     >
-      {/* Small internal styles for a simple, dependency-free entrance animation */}
       <style>{`
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(18px); }
@@ -44,19 +60,16 @@ const NotFound = () => {
       <div className="fade-up max-w-lg w-full">
         <Card className="relative w-full bg-white/75 backdrop-blur-sm border border-white/40 rounded-2xl shadow-[0_10px_40px_rgba(7,11,20,0.06)] overflow-hidden">
           <div className="text-center px-8 py-14 space-y-6">
-            {/* Icon with small pop animation */}
             <div className="flex justify-center">
               <div className="pop-in">
                 <Sparkles className="h-10 w-10 text-blue-600/90" />
               </div>
             </div>
 
-            {/* Headline */}
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900">
               Nothing's here yet ✨
             </h1>
 
-            {/* Availability message (minimal, prominent slug) */}
             <div className="space-y-1">
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
                 <span className="inline-block font-mono text-blue-600 font-medium bg-white/80 px-4 py-1 rounded-lg border border-blue-100 shadow-sm">
@@ -69,7 +82,6 @@ const NotFound = () => {
               </p>
             </div>
 
-            {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
               <Button
                 onClick={handleClaimCalId}
