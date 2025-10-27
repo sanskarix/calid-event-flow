@@ -17,11 +17,16 @@ const NotFound = () => {
     // In a real app, this would pass the slug as a query param
     navigate(`/?signup=true&username=${slug}`);
   };
-  return <div className="min-h-screen flex items-center justify-center bg-background px-6 py-12">
+  return <div 
+      className="min-h-screen flex items-center justify-center px-6 py-12"
+      style={{
+        background: 'linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))'
+      }}
+    >
       <Card 
-        className="relative max-w-xl w-full overflow-hidden border-0 shadow-2xl"
+        className="relative max-w-xl w-full overflow-hidden bg-white dark:bg-gray-950 border-0"
         style={{
-          background: 'linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))'
+          boxShadow: '0 0 40px rgba(0, 0, 0, 0.08)'
         }}
       >
         <div className="relative text-center space-y-10 p-10 md:p-16">
