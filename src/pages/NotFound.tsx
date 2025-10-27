@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Home, Flag } from "lucide-react";
+import { Home } from "lucide-react";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,40 +18,40 @@ const NotFound = () => {
     navigate(`/?signup=true&username=${slug}`);
   };
   return <div className="min-h-screen flex items-center justify-center bg-background px-6 py-12">
-      <Card className="relative max-w-lg w-full overflow-hidden bg-gradient-to-br from-primary/5 via-background to-background border-primary/10 shadow-xl">
-        {/* Decorative flag illustration */}
-        <div className="absolute -top-1 -right-1 w-24 h-24 bg-gradient-to-br from-primary/20 to-primary/5 rounded-bl-[100%] flex items-start justify-end p-3">
-          <Flag className="w-8 h-8 text-primary rotate-12 animate-pulse" />
-        </div>
-        
-        <div className="relative text-center space-y-8 p-8 md:p-12">
+      <Card 
+        className="relative max-w-xl w-full overflow-hidden border-0 shadow-2xl"
+        style={{
+          background: 'linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))'
+        }}
+      >
+        <div className="relative text-center space-y-10 p-10 md:p-16">
           {/* Main content */}
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight">
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
               Nothing's here yet!
             </h1>
             
             {/* Slug availability message */}
-            <div className="space-y-2">
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                <span className="inline-block font-mono text-primary font-semibold bg-primary/10 px-3 py-1 rounded-md border border-primary/20">
-                  /{slug}
+            <div className="space-y-3">
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+                <span className="inline-block font-mono text-primary font-semibold bg-white/60 px-4 py-1.5 rounded-lg border border-primary/20 shadow-sm">
+                  cal.id/{slug}
                 </span>
-                {" "}is available
+                {" "}is still available
               </p>
-              <p className="text-base text-muted-foreground">
-                Claim your Cal ID page in seconds
+              <p className="text-base md:text-lg text-gray-700 font-medium">
+                Make it yours now!
               </p>
             </div>
           </div>
 
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pt-2">
-            <Button onClick={handleClaimCalId} size="lg" className="w-full sm:w-auto shadow-lg hover:shadow-xl transition-shadow">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <Button onClick={handleClaimCalId} size="lg" className="w-full sm:w-auto shadow-lg hover:shadow-xl transition-all">
               Claim my Cal ID
             </Button>
             
-            <Button variant="ghost" onClick={() => navigate('/')} size="lg" className="w-full sm:w-auto">
+            <Button variant="ghost" onClick={() => navigate('/')} size="lg" className="w-full sm:w-auto text-gray-700 hover:text-gray-900">
               <Home className="h-4 w-4 mr-2" />
               Go home
             </Button>
