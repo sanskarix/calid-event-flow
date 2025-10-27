@@ -25,11 +25,7 @@ const NotFound = () => {
           "linear-gradient(hsla(213,100%,97%,1), hsla(229,100%,97%,1), hsla(270,100%,98%,1))",
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+      <div className="animate-in fade-in slide-in-from-bottom-8 duration-600">
         <Card
           className="relative max-w-xl w-full overflow-hidden bg-white/90 dark:bg-gray-950/90 border border-gray-100 rounded-3xl backdrop-blur-xl"
           style={{
@@ -38,16 +34,11 @@ const NotFound = () => {
         >
           <div className="relative text-center space-y-10 p-10 md:p-16">
             {/* Illustration or emoji */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="flex justify-center"
-            >
+            <div className="flex justify-center animate-in fade-in scale-in-50 duration-600 delay-200">
               <div className="bg-gradient-to-br from-primary/10 to-primary/20 p-5 rounded-full">
                 <Sparkles className="h-8 w-8 text-primary" />
               </div>
-            </motion.div>
+            </div>
 
             {/* Title and subtext */}
             <div className="space-y-3">
@@ -72,7 +63,7 @@ const NotFound = () => {
 
             {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+              <div className="transition-transform duration-200 hover:scale-105 active:scale-95">
                 <Button
                   onClick={handleClaimCalId}
                   size="lg"
@@ -93,7 +84,7 @@ const NotFound = () => {
                 >
                   Claim my Cal ID
                 </Button>
-              </motion.div>
+              </div>
 
               <Button
                 variant="ghost"
@@ -112,7 +103,7 @@ const NotFound = () => {
             </p>
           </div>
         </Card>
-      </motion.div>
+      </div>
     </div>
   );
 };
