@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Home, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
 
 const NotFound = () => {
   const location = useLocation();
@@ -27,28 +26,19 @@ const NotFound = () => {
           "linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))",
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
+      <div className="animate-in fade-in slide-in-from-bottom-8 duration-600">
         <Card
           className="relative max-w-lg w-full bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.05)]"
         >
           <div className="text-center px-8 py-14 space-y-8">
             {/* Emoji/Icon header */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="flex justify-center"
-            >
+            <div className="flex justify-center animate-in fade-in scale-in-50 duration-600 delay-100">
               <Sparkles className="h-10 w-10 text-primary/80" />
-            </motion.div>
+            </div>
 
             {/* Headline */}
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900">
-              Nothing’s here yet ✨
+              Nothing's here yet ✨
             </h1>
 
             {/* Availability message */}
@@ -86,7 +76,7 @@ const NotFound = () => {
             </div>
           </div>
         </Card>
-      </motion.div>
+      </div>
     </div>
   );
 };
