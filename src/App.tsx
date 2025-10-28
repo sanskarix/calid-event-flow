@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Settings } from "./pages/Settings";
+import PublicBooking from "./pages/PublicBooking";
 import { Profile } from "./pages/settings/Profile";
 import { General } from "./pages/settings/General";
 import { Calendars } from "./pages/settings/Calendars";
@@ -40,6 +41,7 @@ import { WorkflowBuilder } from "./pages/WorkflowBuilder";
 import { Apps } from "./pages/Apps";
 import Home from "./pages/Home";
 import { Insights } from "./pages/Insights";
+import ClaimPro from "./pages/ClaimPro";
 import { HeaderProvider } from "./contexts/HeaderContext";
 
 const queryClient = new QueryClient();
@@ -52,6 +54,9 @@ const App = () => (
       <HeaderProvider>
         <BrowserRouter>
           <Routes>
+            {/* Public booking page */}
+            <Route path="/cal/:username" element={<PublicBooking />} />
+            
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="event-types" element={<EventTypes />} />
@@ -69,6 +74,7 @@ const App = () => (
               <Route path="workflows/new" element={<WorkflowBuilder />} />
               <Route path="workflows/:workflowId/edit" element={<WorkflowBuilder />} />
               <Route path="insights" element={<Insights />} />
+              <Route path="claim-pro" element={<ClaimPro />} />
             </Route>
             
             <Route path="/settings" element={<Settings />}>

@@ -114,7 +114,7 @@ export const EditEvent = () => {
         <div className="">
           <nav className="flex" aria-label="Tabs">
             {tabs.map(tabItem => <button key={tabItem.id} onClick={() => setActiveTab(tabItem.id)} className={`py-4 px-4 border-b-2 font-medium text-sm whitespace-nowrap transition-colors flex items-center space-x-2 ${activeTab === tabItem.id ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'}`} title={tabItem.name}>
-                <tabItem.icon className="h-4 w-4" />
+                <tabItem.icon className="h-4 `w-4" />
                 <span>{tabItem.name}</span>
               </button>)}
           </nav>

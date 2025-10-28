@@ -846,7 +846,7 @@ export default function Bookings() {
     });
   }, [setHeaderMeta]);
   return <TooltipProvider>
-      <div className="px-8 pb-6 space-y-4 w-full max-w-full">
+      <div className="px-8 pt-0 pb-6 space-y-4 w-full max-w-full">
         {/* Overlay for popups */}
         {(showMeetingNotes || showCancelConfirm || showCancelSelection || showNoShow || showEditLocation || showAddGuests) && <div className="fixed inset-0 bg-black/50 z-40" />}
 

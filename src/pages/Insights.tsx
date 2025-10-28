@@ -170,7 +170,7 @@ export const Insights = () => {
   ];
 
   return (
-    <div className="space-y-6 pt-0 p-6">
+    <div className="space-y-6 pt-0 p-8">
       {/* Tab Navigation */}
       <div className="flex">
         {tabs.map((tab) => (
@@ -347,23 +347,32 @@ export const Insights = () => {
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={bookingTrendsData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis dataKey="week" />
-                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="week" 
+                      axisLine={false}
+                      tickLine={false}
+                      className="text-xs fill-muted-foreground"
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      className="text-xs fill-muted-foreground"
+                    />
                     <Tooltip
                       content={({ active, payload, label }) => {
                         if (active && payload && payload.length) {
                           return (
-                            <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-                              <p className="text-sm font-medium text-gray-700 mb-2">{label}</p>
+                            <div className="rounded-lg border bg-background p-3 shadow-lg">
+                              <p className="text-sm font-medium mb-2">{label}</p>
                               {payload.map((entry, index) => (
                                 <div key={index} className="flex items-center gap-2 text-sm">
                                   <div
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: entry.color }}
                                   />
-                                  <span className="text-gray-600">{entry.dataKey}:</span>
-                                  <span className="font-medium text-gray-900">{entry.value}</span>
+                                  <span className="text-muted-foreground">{entry.dataKey}:</span>
+                                  <span className="font-medium">{entry.value}</span>
                                 </div>
                               ))}
                             </div>
@@ -375,44 +384,56 @@ export const Insights = () => {
                     <Line
                       type="monotone"
                       dataKey="created"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={3}
                       name="Created"
+                      dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="completed"
-                      stroke="#10b981"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-2))"
+                      strokeWidth={3}
                       name="Completed"
+                      dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-2))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="rescheduled"
-                      stroke="#f59e0b"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-3))"
+                      strokeWidth={3}
                       name="Rescheduled"
+                      dot={{ fill: "hsl(var(--chart-3))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-3))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="canceled"
-                      stroke="#ef4444"
-                      strokeWidth={2}
+                      stroke="hsl(var(--destructive))"
+                      strokeWidth={3}
                       name="Canceled"
+                      dot={{ fill: "hsl(var(--destructive))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--destructive))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="noShowHost"
-                      stroke="#8b5cf6"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-4))"
+                      strokeWidth={3}
                       name="No Show (Host)"
+                      dot={{ fill: "hsl(var(--chart-4))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-4))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="noShowGuest"
-                      stroke="#ec4899"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-5))"
+                      strokeWidth={3}
                       name="No Show (Guest)"
+                      dot={{ fill: "hsl(var(--chart-5))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-5))", strokeWidth: 2 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -553,23 +574,32 @@ export const Insights = () => {
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={workflowTrendsData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                    <XAxis dataKey="week" />
-                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+                    <XAxis 
+                      dataKey="week" 
+                      axisLine={false}
+                      tickLine={false}
+                      className="text-xs fill-muted-foreground"
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      className="text-xs fill-muted-foreground"
+                    />
                     <Tooltip
                       content={({ active, payload, label }) => {
                         if (active && payload && payload.length) {
                           return (
-                            <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-                              <p className="text-sm font-medium text-gray-700 mb-2">{label}</p>
+                            <div className="rounded-lg border bg-background p-3 shadow-lg">
+                              <p className="text-sm font-medium mb-2">{label}</p>
                               {payload.map((entry, index) => (
                                 <div key={index} className="flex items-center gap-2 text-sm">
                                   <div
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: entry.color }}
                                   />
-                                  <span className="text-gray-600">{entry.dataKey}:</span>
-                                  <span className="font-medium text-gray-900">{entry.value}</span>
+                                  <span className="text-muted-foreground">{entry.dataKey}:</span>
+                                  <span className="font-medium">{entry.value}</span>
                                 </div>
                               ))}
                             </div>
@@ -581,30 +611,38 @@ export const Insights = () => {
                     <Line
                       type="monotone"
                       dataKey="total"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={3}
                       name="Total"
+                      dot={{ fill: "hsl(var(--primary))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--primary))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="sent"
-                      stroke="#10b981"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-2))"
+                      strokeWidth={3}
                       name="Sent"
+                      dot={{ fill: "hsl(var(--chart-2))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-2))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="read"
-                      stroke="#f59e0b"
-                      strokeWidth={2}
+                      stroke="hsl(var(--chart-3))"
+                      strokeWidth={3}
                       name="Read"
+                      dot={{ fill: "hsl(var(--chart-3))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--chart-3))", strokeWidth: 2 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="failed"
-                      stroke="#ef4444"
-                      strokeWidth={2}
+                      stroke="hsl(var(--destructive))"
+                      strokeWidth={3}
                       name="Failed"
+                      dot={{ fill: "hsl(var(--destructive))", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: "hsl(var(--destructive))", strokeWidth: 2 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>

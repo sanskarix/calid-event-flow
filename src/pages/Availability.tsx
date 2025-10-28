@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Plus, MoreHorizontal, Copy, Trash2, Star } from 'lucide-react';
+import { Plus, MoreHorizontal, Copy, Trash2, Star, Earth, EarthIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
@@ -133,7 +133,7 @@ export const Availability = () => {
             <button
               key={tab.id}
               onClick={() => setSelectedTab(tab.id)}
-              className={`py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
+                className={`py-4 px-6 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                 selectedTab === tab.id
                   ? 'border-primary text-primary'
                   : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
@@ -184,7 +184,7 @@ export const Availability = () => {
                         ))}
                       </div>
                       <div className="flex items-center text-sm text-muted-foreground">
-                        <span className="mr-2">🌍</span>
+                        <span className="mr-2"><EarthIcon className="h-4 w-4" /></span>
                         <span>{schedule.timezone}</span>
                       </div>
                     </div>

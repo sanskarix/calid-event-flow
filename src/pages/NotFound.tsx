@@ -2,90 +2,70 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-
+import { Home } from "lucide-react";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const slug = location.pathname.replace(/^\//, "") || "username";
-
+  // Extract slug from pathname (e.g., /sanskar -> sanskar)
+  const slug = location.pathname.replace(/^\//, '') || 'username';
   useEffect(() => {
-    const msg = `404: User attempted to access: ${location.pathname}`;
-    if (process.env.NODE_ENV !== "production") console.warn(msg);
+    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
-
   const handleClaimCalId = () => {
+    // Navigate to signup with pre-filled username
+    // In a real app, this would pass the slug as a query param
     navigate(`/?signup=true&username=${slug}`);
   };
-
-  return (
-    <div
+  return <div 
       className="min-h-screen flex items-center justify-center px-6 py-12"
       style={{
-        background:
-          "linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))",
+        background: 'linear-gradient(hsla(213,100%,97%,1),hsla(229,100%,97%,1),hsla(270,100%,98%,1))'
       }}
     >
-      <style>{`
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(25px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .fade-up { animation: fadeUp 600ms cubic-bezier(.2,.9,.2,1) both; }
-      `}</style>
-
-      <div className="fade-up max-w-2xl w-full scale-110">
-        <Card className="relative w-full bg-white/85 backdrop-blur-md border border-white/40 rounded-3xl shadow-[0_10px_45px_rgba(7,11,20,0.06)] overflow-hidden">
-          <div className="flex flex-col items-center text-center px-10 py-16 space-y-8">
-            {/* Illustration */}
-            <img
-              src="https://illustrations.popsy.co/gray/mountain.svg"
-              alt="Mountain Illustration"
-              className="w-56 h-56 object-contain opacity-95"
-            />
-
-            {/* Headline */}
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900">
-              Nothing’s here yet
+      <Card 
+        className="relative max-w-xl w-full overflow-hidden bg-white dark:bg-gray-950 border-0"
+        style={{
+          boxShadow: '0 0 40px rgba(0, 0, 0, 0.08)'
+        }}
+      >
+        <div className="relative text-center space-y-10 p-10 md:p-16">
+          {/* Main content */}
+          <div className="space-y-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+              Nothing's here yet!
             </h1>
-
-            {/* Subtext */}
-            <div className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-md">
-              <p>
-                <span
-                  className="font-semibold text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
-                  onClick={handleClaimCalId}
-                >
+            
+            {/* Slug availability message */}
+            <div className="space-y-3">
+              <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+                <span className="inline-block font-mono text-primary font-semibold bg-white/60 px-4 py-1.5 rounded-lg border border-primary/20 shadow-sm">
                   cal.id/{slug}
-                </span>{" "}
-                is still available.
+                </span>
+                {" "}is still available
               </p>
-              <p className="pt-1">Claim it before someone else does!</p>
-            </div>
-
-            {/* Buttons (stacked vertically) */}
-            <div className="flex flex-col gap-4 w-full sm:w-2/3 pt-4">
-              <Button
-                onClick={handleClaimCalId}
-                size="lg"
-                className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
-              >
-                Claim this page
-              </Button>
-
-              <Button
-                onClick={() => navigate("/")}
-                size="lg"
-                className="w-full px-6 py-6 text-lg font-medium rounded-xl bg-gray-100/90 text-gray-800 hover:bg-gray-200/90 transition-all shadow-sm hover:shadow-md"
-              >
-                Go to Cal ID
-              </Button>
+              <p className="text-base md:text-lg text-gray-700 font-medium">
+                Make it yours now!
+              </p>
             </div>
           </div>
-        </Card>
-      </div>
-    </div>
-  );
-};
 
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <Button onClick={handleClaimCalId} size="lg" className="w-full sm:w-auto shadow-lg hover:shadow-xl transition-all">
+              Claim my Cal ID
+            </Button>
+            
+            <Button variant="ghost" onClick={() => navigate('/')} size="lg" className="w-full sm:w-auto text-gray-700 hover:text-gray-900">
+              <Home className="h-4 w-4 mr-2" />
+              Go home
+            </Button>
+          </div>
+
+          {/* Optional 404 indicator */}
+          
+        </div>
+      </Card>
+    </div>;
+};
 export default NotFound;
