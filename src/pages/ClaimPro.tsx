@@ -42,12 +42,8 @@ const ClaimPro = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-2">
             <Sparkles className="w-8 h-8 text-blue-500" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Get 2 Years of Pro
-          </h1>
-          <p className="text-base text-gray-600 dark:text-gray-400">
-            Get Cal ID's Pro version for the next 2 years for free
-          </p>
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Get 2 Years of Cal ID Pro</h1>
+          <p className="text-base text-gray-600 dark:text-gray-400">Just complete these easy steps and claim your Pro access in minutes!</p>
         </div>
 
         {/* Claim Cards */}
