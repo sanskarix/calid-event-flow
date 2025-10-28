@@ -43,7 +43,7 @@ const ClaimPro = () => {
             <Sparkles className="w-8 h-8 text-blue-500" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Get 2 Years of Cal ID Pro</h1>
-          <p className="text-base text-gray-600 dark:text-gray-400">Just complete these easy steps and claim your Pro access in minutes!</p>
+          <p className="text-base text-gray-600 dark:text-gray-400">Simply complete the following steps and claim your Pro plan in minutes!</p>
         </div>
 
         {/* Claim Cards */}
