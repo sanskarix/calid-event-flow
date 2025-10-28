@@ -58,7 +58,7 @@ const ClaimPro = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
-              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock pro for the 1st year</CardTitle>
+              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock 1st year</CardTitle>
               <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all the premium features for one year</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
