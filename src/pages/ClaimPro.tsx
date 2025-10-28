@@ -43,7 +43,7 @@ const ClaimPro = () => {
             <Sparkles className="w-8 h-8 text-blue-500" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Get 2 Years of Cal ID Pro</h1>
-          <p className="text-base text-gray-600 dark:text-gray-400">Simply complete the following steps and claim your Pro plan in minutes!</p>
+          <p className="text-base text-gray-600 dark:text-gray-400">Simply complete these two steps and claim your Pro plan in minutes!</p>
         </div>
 
         {/* Claim Cards */}
@@ -54,7 +54,7 @@ const ClaimPro = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
-              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock 1st year</CardTitle>
+              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock 1st Year</CardTitle>
               <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all premium features for one year</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
@@ -70,8 +70,8 @@ const ClaimPro = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
-              <CardTitle className="text-xl font-bold mb-2 text-gray-600 dark:text-gray-500">Second Year Pro</CardTitle>
-              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">Unlock all the premium features for one year</CardDescription>
+              <CardTitle className="text-xl font-bold mb-2 text-gray-600 dark:text-gray-500">Unlock 2nd Year</CardTitle>
+              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">Unlock all premium features for two years</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
               <Button size="default" className="px-6" onClick={handleClaimSecondYear} disabled={!firstYearClaimed}>
