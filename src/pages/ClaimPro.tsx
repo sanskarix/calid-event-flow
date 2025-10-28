@@ -59,7 +59,7 @@ const ClaimPro = () => {
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
               <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock 1st year</CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all the premium features for one year</CardDescription>
+              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all premium features for one year</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
               <Button size="default" className="px-6" onClick={handleClaimFirstYear}>
@@ -75,9 +75,7 @@ const ClaimPro = () => {
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
               <CardTitle className="text-xl font-bold mb-2 text-gray-600 dark:text-gray-500">Second Year Pro</CardTitle>
-              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">
-                Unlock all premium features
-              </CardDescription>
+              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">Unlock all the premium features for one year</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
               <Button size="default" className="px-6" onClick={handleClaimSecondYear} disabled={!firstYearClaimed}>
