@@ -4,46 +4,37 @@ import { Button } from '@/components/ui/button';
 import { Gift, Sparkles, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import BlackFridayModal from '@/components/BlackFridayModal';
-
 const ClaimPro = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [firstYearClaimed, setFirstYearClaimed] = useState(false);
   const [showBlackFridayModal, setShowBlackFridayModal] = useState(false);
-
   useEffect(() => {
     // Show modal on page load
     setShowBlackFridayModal(true);
   }, []);
-
   const handleClaimFirstYear = () => {
     setFirstYearClaimed(true);
     toast({
       title: "First Year Claimed!",
-      description: "You've successfully claimed your first year of Cal ID Pro.",
+      description: "You've successfully claimed your first year of Cal ID Pro."
     });
   };
-
   const handleClaimSecondYear = () => {
     toast({
       title: "Second Year Claimed!",
-      description: "You've successfully claimed your second year of Cal ID Pro.",
+      description: "You've successfully claimed your second year of Cal ID Pro."
     });
   };
-
   const handleBlackFridayClaim = () => {
     toast({
       title: "Black Friday Offer Claimed!",
-      description: "You've successfully claimed 2 years of Cal ID Pro for free!",
+      description: "You've successfully claimed 2 years of Cal ID Pro for free!"
     });
   };
-
-  return (
-    <>
-      <BlackFridayModal 
-        open={showBlackFridayModal} 
-        onOpenChange={setShowBlackFridayModal}
-        onClaim={handleBlackFridayClaim}
-      />
+  return <>
+      <BlackFridayModal open={showBlackFridayModal} onOpenChange={setShowBlackFridayModal} onClaim={handleBlackFridayClaim} />
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
         {/* Header Section */}
@@ -67,17 +58,11 @@ const ClaimPro = () => {
               <div className="mx-auto mb-4 w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
-              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">First Year Pro</CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-                Unlock all premium features
-              </CardDescription>
+              <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock pro for the 1st year</CardTitle>
+              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all the premium features for one year</CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
-              <Button 
-                size="default" 
-                className="px-6"
-                onClick={handleClaimFirstYear}
-              >
+              <Button size="default" className="px-6" onClick={handleClaimFirstYear}>
                 Claim Pro
               </Button>
             </CardContent>
@@ -95,12 +80,7 @@ const ClaimPro = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
-              <Button 
-                size="default" 
-                className="px-6"
-                onClick={handleClaimSecondYear}
-                disabled={!firstYearClaimed}
-              >
+              <Button size="default" className="px-6" onClick={handleClaimSecondYear} disabled={!firstYearClaimed}>
                 Complete First Year
               </Button>
             </CardContent>
@@ -158,8 +138,6 @@ const ClaimPro = () => {
         </Card>
       </div>
     </div>
-    </>
-  );
+    </>;
 };
-
 export default ClaimPro;
