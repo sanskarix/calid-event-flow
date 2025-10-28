@@ -1,27 +1,26 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Gift, Sparkles, Check } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Gift, Sparkles, Check } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 const ClaimPro = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [firstYearClaimed, setFirstYearClaimed] = useState(false);
   const handleClaimFirstYear = () => {
     setFirstYearClaimed(true);
     toast({
       title: "First Year Claimed!",
-      description: "You've successfully claimed your first year of Cal ID Pro."
+      description: "You've successfully claimed your first year of Cal ID Pro.",
     });
   };
   const handleClaimSecondYear = () => {
     toast({
       title: "Second Year Claimed!",
-      description: "You've successfully claimed your second year of Cal ID Pro."
+      description: "You've successfully claimed your second year of Cal ID Pro.",
     });
   };
-  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
         {/* Header Section */}
         <div className="text-center space-y-4">
@@ -29,7 +28,9 @@ const ClaimPro = () => {
             <Sparkles className="w-8 h-8 text-blue-500" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Get 2 Years of Cal ID Pro</h1>
-          <p className="text-base text-gray-600 dark:text-gray-400">Simply complete these two steps and claim your Pro plan in minutes!</p>
+          <p className="text-base text-gray-600 dark:text-gray-400">
+            Simply complete these two steps and claim your Pro plan in minutes!
+          </p>
         </div>
 
         {/* Claim Cards */}
@@ -41,11 +42,13 @@ const ClaimPro = () => {
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
               <CardTitle className="text-xl font-bold mb-2 text-gray-900 dark:text-white">Unlock 1st Year</CardTitle>
-              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">Unlock all premium features for one year</CardDescription>
+              <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+                Unlock all premium features for one year
+              </CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
               <Button size="default" className="px-6" onClick={handleClaimFirstYear}>
-                Claim Pro
+                Claim
               </Button>
             </CardContent>
           </Card>
@@ -57,11 +60,13 @@ const ClaimPro = () => {
                 <Gift className="w-8 h-8 text-blue-500" />
               </div>
               <CardTitle className="text-xl font-bold mb-2 text-gray-600 dark:text-gray-500">Unlock 2nd Year</CardTitle>
-              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">Unlock all premium features for two years</CardDescription>
+              <CardDescription className="text-sm text-gray-500 dark:text-gray-600">
+                Unlock all premium features for two years
+              </CardDescription>
             </CardHeader>
             <CardContent className="text-center pb-8">
               <Button size="default" className="px-6" onClick={handleClaimSecondYear} disabled={!firstYearClaimed}>
-                Complete First Year
+                Claim
               </Button>
             </CardContent>
           </Card>
@@ -117,6 +122,7 @@ const ClaimPro = () => {
           </CardContent>
         </Card>
       </div>
-    </div>;
+    </div>
+  );
 };
 export default ClaimPro;
