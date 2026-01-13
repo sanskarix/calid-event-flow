@@ -42,6 +42,7 @@ import { Apps } from "./pages/Apps";
 import Home from "./pages/Home";
 import { Insights } from "./pages/Insights";
 import ClaimPro from "./pages/ClaimPro";
+import ClaimUsername from "./pages/ClaimUsername";
 import { HeaderProvider } from "./contexts/HeaderContext";
 
 const queryClient = new QueryClient();
@@ -54,8 +55,9 @@ const App = () => (
       <HeaderProvider>
         <BrowserRouter>
           <Routes>
-            {/* Public booking page */}
+            {/* Public pages without layout */}
             <Route path="/cal/:username" element={<PublicBooking />} />
+            <Route path="/claim/:username" element={<ClaimUsername />} />
             
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
