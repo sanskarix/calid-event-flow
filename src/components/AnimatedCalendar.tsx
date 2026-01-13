@@ -1,148 +1,233 @@
-import { useState, useEffect } from "react";
-import { Check, Calendar } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { Video, Coffee, Users, Briefcase, Phone, Sparkles } from "lucide-react";
 
-const timeSlots = [
-  { time: "9:00 AM", label: "Morning standup" },
-  { time: "10:30 AM", label: "Client call" },
-  { time: "1:00 PM", label: "Team sync" },
-  { time: "3:00 PM", label: "Review meeting" },
-  { time: "4:30 PM", label: "1:1 with Alex" },
+interface FloatingMeeting {
+  id: number;
+  x: number;
+  y: number;
+  icon: React.ReactNode;
+  label: string;
+  time: string;
+  color: string;
+  size: "sm" | "md" | "lg";
+  velocity: { x: number; y: number };
+}
+
+const iconComponents = [
+  { icon: <Video className="w-5 h-5" />, label: "Team Sync", color: "from-blue-500/20 to-blue-600/20 border-blue-400/30" },
+  { icon: <Coffee className="w-5 h-5" />, label: "Coffee Chat", color: "from-amber-500/20 to-orange-600/20 border-amber-400/30" },
+  { icon: <Users className="w-5 h-5" />, label: "1:1 Meeting", color: "from-emerald-500/20 to-green-600/20 border-emerald-400/30" },
+  { icon: <Briefcase className="w-5 h-5" />, label: "Interview", color: "from-purple-500/20 to-violet-600/20 border-purple-400/30" },
+  { icon: <Phone className="w-5 h-5" />, label: "Quick Call", color: "from-rose-500/20 to-pink-600/20 border-rose-400/30" },
 ];
 
-const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
-const calendarDays = [
-  [null, null, 1, 2, 3, 4, 5],
-  [6, 7, 8, 9, 10, 11, 12],
-  [13, 14, 15, 16, 17, 18, 19],
-  [20, 21, 22, 23, 24, 25, 26],
-  [27, 28, 29, 30, 31, null, null],
-];
+const times = ["9:00 AM", "10:30 AM", "2:00 PM", "3:30 PM", "4:00 PM"];
+const sizes: ("sm" | "md" | "lg")[] = ["sm", "md", "lg", "md", "sm"];
 
 export const AnimatedCalendar = () => {
-  const [bookedSlots, setBookedSlots] = useState<number[]>([]);
-  const [activeDay, setActiveDay] = useState(15);
-  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 200, y: 200 });
+  const [meetings, setMeetings] = useState<FloatingMeeting[]>([]);
+  const [draggedId, setDraggedId] = useState<number | null>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
 
+  // Initialize floating meetings
   useEffect(() => {
-    if (isHovered) return;
-    
+    const initialMeetings: FloatingMeeting[] = iconComponents.map((item, i) => ({
+      id: i,
+      x: 60 + Math.random() * 280,
+      y: 60 + Math.random() * 300,
+      icon: item.icon,
+      label: item.label,
+      time: times[i],
+      color: item.color,
+      size: sizes[i],
+      velocity: {
+        x: (Math.random() - 0.5) * 0.5,
+        y: (Math.random() - 0.5) * 0.5,
+      },
+    }));
+    setMeetings(initialMeetings);
+  }, []);
+
+  // Floating animation
+  useEffect(() => {
+    if (draggedId !== null) return;
+
     const interval = setInterval(() => {
-      setBookedSlots((prev) => {
-        if (prev.length >= timeSlots.length) {
-          // Reset and change day
-          setActiveDay((d) => (d >= 28 ? 15 : d + 1));
-          return [];
-        }
-        return [...prev, prev.length];
-      });
-    }, 800);
+      setMeetings((prev) =>
+        prev.map((meeting) => {
+          let newX = meeting.x + meeting.velocity.x;
+          let newY = meeting.y + meeting.velocity.y;
+          let newVelX = meeting.velocity.x;
+          let newVelY = meeting.velocity.y;
+
+          // Bounce off walls
+          if (newX < 50 || newX > 350) newVelX *= -1;
+          if (newY < 50 || newY > 380) newVelY *= -1;
+
+          // Keep in bounds
+          newX = Math.max(50, Math.min(350, newX));
+          newY = Math.max(50, Math.min(380, newY));
+
+          return {
+            ...meeting,
+            x: newX,
+            y: newY,
+            velocity: { x: newVelX, y: newVelY },
+          };
+        })
+      );
+    }, 30);
 
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [draggedId]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePos({ x, y });
+
+    if (draggedId !== null) {
+      setMeetings((prev) =>
+        prev.map((m) =>
+          m.id === draggedId
+            ? { ...m, x: x - dragOffset.x, y: y - dragOffset.y }
+            : m
+        )
+      );
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent, meeting: FloatingMeeting) => {
+    e.preventDefault();
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setDraggedId(meeting.id);
+    setDragOffset({ x: x - meeting.x, y: y - meeting.y });
+  };
+
+  const handleMouseUp = () => {
+    if (draggedId !== null) {
+      // Give it a little velocity when released
+      setMeetings((prev) =>
+        prev.map((m) =>
+          m.id === draggedId
+            ? {
+                ...m,
+                velocity: {
+                  x: (Math.random() - 0.5) * 0.8,
+                  y: (Math.random() - 0.5) * 0.8,
+                },
+              }
+            : m
+        )
+      );
+    }
+    setDraggedId(null);
+  };
+
+  const getSizeClasses = (size: "sm" | "md" | "lg") => {
+    switch (size) {
+      case "sm":
+        return "px-3 py-2 text-xs";
+      case "lg":
+        return "px-5 py-4 text-sm";
+      default:
+        return "px-4 py-3 text-sm";
+    }
+  };
 
   return (
-    <div 
-      className="relative w-full max-w-md mx-auto"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <div
+      ref={containerRef}
+      className="relative w-full h-[450px] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-white/10 shadow-2xl cursor-crosshair"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={() => {
+        handleMouseUp();
+        setIsHovering(false);
+      }}
+      onMouseEnter={() => setIsHovering(true)}
     >
-      {/* Floating elements */}
-      <div className="absolute -top-4 -left-4 w-12 h-12 bg-primary/10 rounded-full animate-pulse" />
-      <div className="absolute -bottom-6 -right-6 w-16 h-16 bg-primary/5 rounded-full animate-pulse delay-300" />
-      
-      {/* Main card */}
-      <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-primary to-primary/80 p-4 text-white">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              <span className="font-semibold">January 2026</span>
-            </div>
-            <div className="text-sm opacity-80">Your Schedule</div>
-          </div>
-        </div>
+      {/* Animated background grid */}
+      <div className="absolute inset-0 opacity-20">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+            transform: isHovering
+              ? `translate(${(mousePos.x - 200) * 0.02}px, ${(mousePos.y - 200) * 0.02}px)`
+              : "none",
+            transition: "transform 0.3s ease-out",
+          }}
+        />
+      </div>
 
-        {/* Mini calendar */}
-        <div className="p-4 border-b border-gray-100">
-          <div className="grid grid-cols-7 gap-1 text-center text-xs">
-            {weekDays.map((day, i) => (
-              <div key={i} className="text-gray-400 font-medium py-1">
-                {day}
-              </div>
-            ))}
-            {calendarDays.flat().map((day, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "py-1.5 rounded-md text-sm transition-all duration-300",
-                  day === activeDay && "bg-primary text-white font-semibold scale-110",
-                  day && day !== activeDay && "text-gray-600 hover:bg-gray-50",
-                  !day && "text-transparent"
-                )}
-              >
-                {day || "."}
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Glowing orbs that follow cursor */}
+      <div
+        className="absolute w-64 h-64 rounded-full bg-primary/20 blur-[100px] transition-all duration-700 ease-out pointer-events-none"
+        style={{
+          left: mousePos.x - 128,
+          top: mousePos.y - 128,
+          opacity: isHovering ? 0.6 : 0.3,
+        }}
+      />
+      <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-blue-500/20 blur-[60px] animate-pulse pointer-events-none" />
+      <div className="absolute bottom-10 left-10 w-24 h-24 rounded-full bg-purple-500/20 blur-[50px] animate-pulse pointer-events-none" />
 
-        {/* Time slots */}
-        <div className="p-4 space-y-2">
-          <div className="text-xs text-gray-500 font-medium mb-3">
-            Available times for Jan {activeDay}
-          </div>
-          {timeSlots.map((slot, index) => {
-            const isBooked = bookedSlots.includes(index);
-            return (
-              <div
-                key={index}
-                className={cn(
-                  "flex items-center justify-between p-3 rounded-lg border transition-all duration-500",
-                  isBooked
-                    ? "bg-primary/5 border-primary/20"
-                    : "bg-gray-50 border-gray-100 hover:border-primary/30"
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-300",
-                      isBooked ? "bg-primary" : "bg-gray-300"
-                    )}
-                  />
-                  <div>
-                    <div className={cn(
-                      "text-sm font-medium transition-colors",
-                      isBooked ? "text-primary" : "text-gray-700"
-                    )}>
-                      {slot.time}
-                    </div>
-                    <div className="text-xs text-gray-400">{slot.label}</div>
-                  </div>
-                </div>
-                <div
-                  className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300",
-                    isBooked
-                      ? "bg-primary text-white scale-100"
-                      : "bg-gray-200 scale-75 opacity-0"
-                  )}
-                >
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      {/* Instruction hint */}
+      <div className="absolute top-4 left-4 flex items-center gap-2 text-white/40 text-xs pointer-events-none z-10">
+        <Sparkles className="w-3 h-3" />
+        <span>Drag the meetings around!</span>
+      </div>
 
-        {/* Footer hint */}
-        <div className="px-4 pb-4">
-          <div className="text-center text-xs text-gray-400 bg-gray-50 rounded-lg py-2">
-            ✨ Bookings sync automatically
+      {/* Floating meeting bubbles */}
+      {meetings.map((meeting) => (
+        <div
+          key={meeting.id}
+          className={cn(
+            "absolute cursor-grab active:cursor-grabbing select-none",
+            "rounded-2xl backdrop-blur-md bg-gradient-to-br border",
+            "shadow-lg hover:shadow-xl transition-shadow duration-200",
+            "flex items-center gap-2 text-white/90",
+            meeting.color,
+            getSizeClasses(meeting.size),
+            draggedId === meeting.id && "scale-110 z-50 shadow-2xl ring-2 ring-white/20"
+          )}
+          style={{
+            left: meeting.x,
+            top: meeting.y,
+            transform: `translate(-50%, -50%) ${
+              draggedId === meeting.id ? "scale(1.1)" : "scale(1)"
+            }`,
+            transition: draggedId === meeting.id ? "none" : "transform 0.2s ease-out, box-shadow 0.2s ease-out",
+          }}
+          onMouseDown={(e) => handleMouseDown(e, meeting)}
+        >
+          <div className="flex-shrink-0 opacity-80">{meeting.icon}</div>
+          <div className="flex flex-col">
+            <span className="font-medium whitespace-nowrap">{meeting.label}</span>
+            <span className="text-[10px] text-white/50">{meeting.time}</span>
           </div>
         </div>
+      ))}
+
+      {/* Bottom hint */}
+      <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
+        <span className="text-white/30 text-xs">
+          Your schedule, beautifully organized
+        </span>
       </div>
     </div>
   );
