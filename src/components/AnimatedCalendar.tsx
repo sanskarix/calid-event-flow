@@ -147,7 +147,7 @@ export const AnimatedCalendar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[450px] rounded-3xl overflow-hidden bg-transparent cursor-crosshair"
+      className="relative w-full h-[450px] rounded-3xl overflow-hidden cursor-crosshair bg-white/40 dark:bg-black/20 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/5"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={() => {
@@ -156,6 +156,8 @@ export const AnimatedCalendar = () => {
       }}
       onMouseEnter={() => setIsHovering(true)}
     >
+      {/* Frosted glass radial glow */}
+      <div className="absolute inset-0 bg-gradient-radial from-white/60 via-white/20 to-transparent dark:from-white/10 dark:via-transparent pointer-events-none" />
       {/* Subtle animated background grid */}
       <div className="absolute inset-0 opacity-30">
         <div
