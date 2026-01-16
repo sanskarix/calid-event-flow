@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Plus, ExternalLink, Search, Copy, Calendar, Clock2, Users, Video, Coffee, Briefcase, GraduationCap, Heart, Zap, Target, User } from 'lucide-react';
+import { Plus, ExternalLink, Search, Copy, Calendar, Clock2, Users, Video, Coffee, Briefcase, GraduationCap, Heart, Zap, Target, User, X, Trash2, AlertTriangle } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { CreateEventModal } from '../components/CreateEventModal';
 import { CreateTeamEventModal } from '../components/CreateTeamEventModal';
@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '../components/ui/tooltip';
 import { useOutletContext } from 'react-router-dom';
 import type { HeaderMeta } from '../components/Layout';
+import { Dialog, DialogContent } from '../components/ui/dialog';
+import { Button } from '../components/ui/button';
 
 interface EventType {
   id: string;
@@ -58,6 +60,8 @@ export const EventTypes = () => {
   const [showNewDropdown, setShowNewDropdown] = useState(false);
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const [selectedEventForIcon, setSelectedEventForIcon] = useState<{id: string, icon: string, color: string} | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<EventType | null>(null);
   const { setHeaderMeta } = useOutletContext<{ setHeaderMeta: (meta: HeaderMeta) => void }>();
 
   const newDropdownRef = useRef<HTMLDivElement>(null);
@@ -328,11 +332,26 @@ export const EventTypes = () => {
     }
   };
 
-  const handleDeleteEvent = (eventId: string) => {
-    setTeamEvents(prevTeams => prevTeams.map(team => ({
-      ...team,
-      eventTypes: team.eventTypes?.filter(event => event.id !== eventId) || []
-    })));
+  const handleDeleteClick = (eventId: string) => {
+    const event = teamEvents.find(team => 
+      team.eventTypes?.some(e => e.id === eventId)
+    )?.eventTypes?.find(e => e.id === eventId);
+    
+    if (event) {
+      setEventToDelete(event);
+      setDeleteModalOpen(true);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (eventToDelete) {
+      setTeamEvents(prevTeams => prevTeams.map(team => ({
+        ...team,
+        eventTypes: team.eventTypes?.filter(event => event.id !== eventToDelete.id) || []
+      })));
+      setDeleteModalOpen(false);
+      setEventToDelete(null);
+    }
   };
 
   if (!teamEvents.length) {
@@ -509,7 +528,7 @@ export const EventTypes = () => {
           onCopyLink={handleCopyLink}
           onToggleEvent={handleToggleEvent}
           onDuplicateEvent={handleDuplicateEvent}
-          onDeleteEvent={handleDeleteEvent}
+          onDeleteEvent={handleDeleteClick}
           onReorderEvents={handleReorderEvents}
           onIconClick={handleIconClick}
         />
@@ -537,6 +556,36 @@ export const EventTypes = () => {
           currentColor={selectedEventForIcon?.color || '#6366f1'}
           onSelectIcon={handleIconSelect}
         />
+
+        {/* Delete Event Modal */}
+        <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+          <DialogContent className="max-w-md">
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold mb-2">Delete Event Type</h2>
+                  <p className="text-muted-foreground">
+                    Are you sure you want to delete "{eventToDelete?.title}"? This action cannot be undone and all associated bookings will be affected.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <Button variant="outline" onClick={() => setDeleteModalOpen(false)} className="flex-1">
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmDelete} variant="destructive" className="flex-1">
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Yes, delete event
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
