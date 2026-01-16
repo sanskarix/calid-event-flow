@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent } from './ui/dialog';
 import { Button } from './ui/button';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, X, Trash2 } from 'lucide-react';
 
 interface DisbandTeamModalProps {
   open: boolean;
@@ -30,9 +30,11 @@ export const DisbandTeamModal = ({ open, onClose, onConfirm, teamName }: Disband
 
           <div className="flex space-x-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
+              <X className="h-4 w-4 mr-2" />
               Cancel
             </Button>
             <Button onClick={onConfirm} variant="destructive" className="flex-1">
+              <Trash2 className="h-4 w-4 mr-2" />
               Yes, disband team
             </Button>
           </div>
