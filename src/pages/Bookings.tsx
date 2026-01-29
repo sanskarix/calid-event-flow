@@ -13,6 +13,7 @@ import type { DateRange } from 'react-day-picker';
 import type { HeaderMeta } from '../components/Layout';
 import { useOutletContext } from 'react-router-dom';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { BookingCard } from '../components/BookingCard';
 interface Meeting {
   id: string;
   title: string;
@@ -490,7 +491,7 @@ export default function Bookings() {
       duration: 3000
     });
   };
-  const handleReschedule = () => {
+  const handleReschedule = (_meeting?: Meeting) => {
     navigate('/scheduling-coming-soon');
   };
   const handleCancelEvent = (meeting: Meeting) => {
@@ -1003,13 +1004,55 @@ export default function Bookings() {
           {todayMeetings.length > 0 && <div className="space-y-3">
               <h2 className="text-sm font-medium text-muted-foreground">Today</h2>
               <div className="space-y-3">
-                {todayMeetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)}
+                {todayMeetings.map(meeting => (
+                  <BookingCard
+                    key={meeting.id}
+                    meeting={meeting}
+                    onReschedule={handleReschedule}
+                    onCancel={handleCancelEvent}
+                    onEditLocation={(m) => {
+                      setSelectedMeeting(m);
+                      setShowEditLocation(true);
+                    }}
+                    onAddGuests={(m) => {
+                      setSelectedMeeting(m);
+                      setShowAddGuests(true);
+                    }}
+                    onViewNotes={(m) => {
+                      setSelectedMeeting(m);
+                      setShowMeetingNotes(true);
+                    }}
+                    onMarkNoShow={handleMarkNoShow}
+                    onCopyEmail={() => toast({ description: "Email copied", duration: 2000 })}
+                  />
+                ))}
               </div>
             </div>}
           
           {otherMeetings.length > 0 && <div className={`space-y-3 ${todayMeetings.length > 0 ? 'mt-6' : ''}`}>
               <div className="space-y-3">
-                {otherMeetings.map(meeting => <MeetingCard key={meeting.id} meeting={meeting} />)}
+                {otherMeetings.map(meeting => (
+                  <BookingCard
+                    key={meeting.id}
+                    meeting={meeting}
+                    onReschedule={handleReschedule}
+                    onCancel={handleCancelEvent}
+                    onEditLocation={(m) => {
+                      setSelectedMeeting(m);
+                      setShowEditLocation(true);
+                    }}
+                    onAddGuests={(m) => {
+                      setSelectedMeeting(m);
+                      setShowAddGuests(true);
+                    }}
+                    onViewNotes={(m) => {
+                      setSelectedMeeting(m);
+                      setShowMeetingNotes(true);
+                    }}
+                    onMarkNoShow={handleMarkNoShow}
+                    onCopyEmail={() => toast({ description: "Email copied", duration: 2000 })}
+                  />
+                ))}
               </div>
             </div>}
 
