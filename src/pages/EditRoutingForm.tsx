@@ -12,6 +12,7 @@ import { RoutingFormEmbedModal } from '../components/RoutingFormEmbedModal';
 import { useOutletContext } from 'react-router-dom';
 import type { HeaderMeta } from '../components/Layout';
 import { EventEmbed } from '../components/EventEmbed';
+import { FormBuilder } from '../components/form-builder/FormBuilder';
 
 export interface FormField {
   id: string;
@@ -280,128 +281,10 @@ export const EditRoutingForm = () => {
       case 'form':
         return (
           <div className="w-full">
-            <div className="px-8 py-6 space-y-4 w-full max-w-full">
-              {formFields.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center min-h-[600px]">
-                  <div className="text-center space-y-4">
-                    <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto">
-                      <FileText className="h-12 w-12 text-muted-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold mb-2">Create your first field</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Fields are the form fields that the booker would see.
-                      </p>
-                      <Button onClick={handleCreateField}>Create Field</Button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {formFields.map(field => (
-                    <div key={field.id} className="border rounded-lg transition-all duration-200">
-                      <div className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            {field.collapsed ? (
-                              <div className="text-sm font-medium">
-                                {field.label || 'New Field'}
-                              </div>
-                            ) : (
-                              <Input
-                                value={field.label}
-                                onChange={e => handleUpdateField(field.id, { label: e.target.value })}
-                                placeholder="Field label"
-                                className="border-0 shadow-none p-0 text-sm font-medium focus-visible:ring-0"
-                              />
-                            )}
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Button variant="ghost" size="icon" onClick={() => toggleFieldCollapse(field.id)} className="h-6 w-6">
-                              {field.collapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
-                            </Button>
-                            <Button variant="ghost" size="icon" onClick={() => handleDeleteField(field.id)} className="h-6 w-6 text-red-600 hover:text-red-700">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-
-                        <div className={`transition-all duration-200 ${field.collapsed ? 'max-h-0 overflow-hidden opacity-0' : 'max-h-none opacity-100'}`}>
-                          {!field.collapsed && (
-                            <div className="mt-4 space-y-4 animate-in slide-in-from-top-2">
-                              <div className="space-y-2">
-                                <Label>Label</Label>
-                                <Input
-                                  value={field.identifier}
-                                  onChange={e => handleUpdateField(field.id, { identifier: e.target.value })}
-                                  placeholder="This is what your users would see"
-                                />
-                              </div>
-
-                              <div className="space-y-2">
-                                <Label>Identifier</Label>
-                                <Input
-                                  value={field.identifier}
-                                  onChange={e => handleUpdateField(field.id, { identifier: e.target.value })}
-                                  placeholder="Identifies field by this name"
-                                />
-                              </div>
-
-                              <div className="space-y-2">
-                                <Label>Type</Label>
-                                <Select
-                                  value={field.type}
-                                  onValueChange={(value: FormField['type']) => handleUpdateField(field.id, { type: value })}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="short-text">Short Text</SelectItem>
-                                    <SelectItem value="number">Number</SelectItem>
-                                    <SelectItem value="long-text">Long Text</SelectItem>
-                                    <SelectItem value="single-selection">Single Selection</SelectItem>
-                                    <SelectItem value="multiple-selection">Multiple Selection</SelectItem>
-                                    <SelectItem value="phone">Phone</SelectItem>
-                                    <SelectItem value="email">Email</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </div>
-
-                              <div className="space-y-2">
-                                <Label>Required</Label>
-                                <div className="flex space-x-2">
-                                  <Button
-                                    variant={field.required ? 'default' : 'outline'}
-                                    onClick={() => handleUpdateField(field.id, { required: true })}
-                                    size="sm"
-                                    className="px-3 py-1 h-7 text-xs"
-                                  >
-                                    Yes
-                                  </Button>
-                                  <Button
-                                    variant={!field.required ? 'default' : 'outline'}
-                                    onClick={() => handleUpdateField(field.id, { required: false })}
-                                    size="sm"
-                                    className="px-3 py-1 h-7 text-xs"
-                                  >
-                                    No
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <Button variant="outline" onClick={handleCreateField} className="w-full">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add field
-                  </Button>
-                </div>
-              )}
-            </div>
+            <FormBuilder
+              onSave={(schema) => console.log('Form saved:', schema)}
+              onPublish={(schema) => console.log('Form published:', schema)}
+            />
           </div>
         );
 
