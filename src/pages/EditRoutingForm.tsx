@@ -12,6 +12,7 @@ import { RoutingFormEmbedModal } from '../components/RoutingFormEmbedModal';
 import { useOutletContext } from 'react-router-dom';
 import type { HeaderMeta } from '../components/Layout';
 import { EventEmbed } from '../components/EventEmbed';
+import { FormBuilder } from '../components/form-builder/FormBuilder';
 
 export interface FormField {
   id: string;
