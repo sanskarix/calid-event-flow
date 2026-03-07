@@ -106,7 +106,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   header,
   background,
   submitButton,
-  previewMode,
+  formWidth,
   onSelectField,
   onReorderField,
   onDropNewField,
@@ -116,7 +116,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
-  const isMobile = previewMode === 'mobile';
+  const isMobile = formWidth <= 500;
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
