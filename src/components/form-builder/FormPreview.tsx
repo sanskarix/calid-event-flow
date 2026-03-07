@@ -66,8 +66,8 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
   };
 
   // Build rows
-  const rows: typeof schema.fields[][] = [];
-  let currentRow: typeof schema.fields[] = [];
+  const rows: (typeof schema.fields[number])[][] = [];
+  let currentRow: (typeof schema.fields[number])[] = [];
   let cols = 0;
   schema.fields.forEach(f => {
     const c = isMobile || f.layout === 'full' ? 12 : 6;
