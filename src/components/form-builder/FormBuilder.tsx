@@ -25,9 +25,6 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
 }) => {
   const [schema, setSchema] = useState<FormSchema>(initialSchema || createDefaultSchema());
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
-  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
-  const [showPreview, setShowPreview] = useState(false);
-  const [showJson, setShowJson] = useState(false);
   const [settingsPanel, setSettingsPanel] = useState<'field' | 'header' | 'background' | 'submit'>('field');
   const { toast } = useToast();
 
