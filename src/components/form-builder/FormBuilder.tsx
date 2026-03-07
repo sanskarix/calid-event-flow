@@ -1,6 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { Monitor, Smartphone, Eye, Save, Send, Code } from 'lucide-react';
-import { Button } from '../ui/button';
 import { FieldLibrary } from './FieldLibrary';
 import { FormCanvas } from './FormCanvas';
 import { FieldSettings } from './FieldSettings';
