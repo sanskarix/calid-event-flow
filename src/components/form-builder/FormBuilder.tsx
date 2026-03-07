@@ -82,108 +82,48 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
     });
   }, []);
 
-  const handleSave = () => {
-    onSave?.(schema);
-    toast({ title: 'Form saved', description: 'Your form has been saved successfully.' });
-  };
-
-  const handlePublish = () => {
-    onPublish?.(schema);
-    toast({ title: 'Form published', description: 'Your form is now live.' });
-  };
-
-  if (showPreview) {
-    return <FormPreview schema={schema} onClose={() => setShowPreview(false)} />;
-  }
-
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col bg-muted/30">
-      {/* Toolbar */}
-      <div className="h-12 border-b border-border bg-card flex items-center justify-between px-4 flex-shrink-0">
-        <div className="flex items-center gap-1">
-          <Button
-            variant={previewMode === 'desktop' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setPreviewMode('desktop')}
-            className="h-8 w-8 p-0"
-          >
-            <Monitor className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={previewMode === 'mobile' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setPreviewMode('mobile')}
-            className="h-8 w-8 p-0"
-          >
-            <Smartphone className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setShowJson(!showJson)}>
-            <Code className="h-3.5 w-3.5 mr-1" /> JSON
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={() => setShowPreview(true)}>
-            <Eye className="h-3.5 w-3.5 mr-1" /> Preview
-          </Button>
-          <Button variant="outline" size="sm" className="h-8 text-xs" onClick={handleSave}>
-            <Save className="h-3.5 w-3.5 mr-1" /> Save
-          </Button>
-          <Button size="sm" className="h-8 text-xs" onClick={handlePublish}>
-            <Send className="h-3.5 w-3.5 mr-1" /> Publish
-          </Button>
-        </div>
+    <div className="h-[calc(100vh-120px)] flex bg-muted/30">
+      {/* Left Panel - Field Library */}
+      <div className="w-56 border-r border-border bg-card flex-shrink-0 overflow-hidden">
+        <FieldLibrary onAddField={addField} />
       </div>
 
-      {/* Main Area */}
-      <div className="flex-1 flex min-h-0">
-        {/* Left Panel - Field Library */}
-        <div className="w-56 border-r border-border bg-card flex-shrink-0 overflow-hidden">
-          <FieldLibrary onAddField={addField} />
-        </div>
+      {/* Center Panel - Canvas */}
+      <div className="flex-1 min-w-0 relative">
+        <FormCanvas
+          fields={schema.fields}
+          selectedFieldId={selectedFieldId}
+          header={schema.header}
+          background={schema.background}
+          submitButton={schema.submitButton}
+          formWidth={schema.formWidth}
+          onSelectField={setSelectedFieldId}
+          onReorderField={reorderField}
+          onDropNewField={(type, index) => addField(type as FieldType, index)}
+          onDeleteField={(id) => deleteField(id)}
+          onDuplicateField={(id) => duplicateField(id)}
+        />
+      </div>
 
-        {/* Center Panel - Canvas */}
-        <div className="flex-1 min-w-0 relative">
-          {showJson ? (
-            <div className="h-full overflow-auto p-6">
-              <pre className="text-xs bg-card border border-border rounded-lg p-4 overflow-auto max-h-full font-mono text-foreground">
-                {JSON.stringify(schema, null, 2)}
-              </pre>
-            </div>
-          ) : (
-            <FormCanvas
-              fields={schema.fields}
-              selectedFieldId={selectedFieldId}
-              header={schema.header}
-              background={schema.background}
-              submitButton={schema.submitButton}
-              previewMode={previewMode}
-              onSelectField={setSelectedFieldId}
-              onReorderField={reorderField}
-              onDropNewField={(type, index) => addField(type as FieldType, index)}
-              onDeleteField={(id) => deleteField(id)}
-              onDuplicateField={(id) => duplicateField(id)}
-            />
-          )}
-        </div>
-
-        {/* Right Panel - Settings */}
-        <div className="w-64 border-l border-border bg-card flex-shrink-0 overflow-hidden">
-          <FieldSettings
-            field={selectedField}
-            header={schema.header}
-            background={schema.background}
-            submitButton={schema.submitButton}
-            onUpdateField={updateField}
-            onDeleteField={() => deleteField()}
-            onDuplicateField={() => duplicateField()}
-            onUpdateHeader={updates => setSchema(prev => ({ ...prev, header: { ...prev.header, ...updates } }))}
-            onUpdateBackground={updates => setSchema(prev => ({ ...prev, background: { ...prev.background, ...updates } }))}
-            onUpdateSubmitButton={updates => setSchema(prev => ({ ...prev, submitButton: { ...prev.submitButton, ...updates } }))}
-            activePanel={settingsPanel}
-            onSetActivePanel={setSettingsPanel}
-          />
-        </div>
+      {/* Right Panel - Settings */}
+      <div className="w-64 border-l border-border bg-card flex-shrink-0 overflow-hidden">
+        <FieldSettings
+          field={selectedField}
+          header={schema.header}
+          background={schema.background}
+          submitButton={schema.submitButton}
+          formWidth={schema.formWidth}
+          onUpdateField={updateField}
+          onDeleteField={() => deleteField()}
+          onDuplicateField={() => duplicateField()}
+          onUpdateHeader={updates => setSchema(prev => ({ ...prev, header: { ...prev.header, ...updates } }))}
+          onUpdateBackground={updates => setSchema(prev => ({ ...prev, background: { ...prev.background, ...updates } }))}
+          onUpdateSubmitButton={updates => setSchema(prev => ({ ...prev, submitButton: { ...prev.submitButton, ...updates } }))}
+          onUpdateFormWidth={width => setSchema(prev => ({ ...prev, formWidth: width }))}
+          activePanel={settingsPanel}
+          onSetActivePanel={setSettingsPanel}
+        />
       </div>
     </div>
   );

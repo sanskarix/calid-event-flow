@@ -317,9 +317,8 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
 
           {/* Form Card */}
           <div
-            className={`mx-auto bg-card rounded-xl shadow-lg border border-border transition-all duration-300 ${
-              isMobile ? 'max-w-[375px] p-5' : 'max-w-[900px] p-10'
-            }`}
+            className="mx-auto bg-card rounded-xl shadow-lg border border-border transition-all duration-300 p-10"
+            style={{ maxWidth: `${formWidth}px` }}
           >
             {fields.length === 0 ? (
               <div className="py-16 text-center border-2 border-dashed border-border rounded-lg">

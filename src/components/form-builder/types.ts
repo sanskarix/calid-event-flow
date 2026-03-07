@@ -125,5 +125,6 @@ export function createDefaultSchema(): FormSchema {
     },
     fields: [],
     routingRules: [],
+    formWidth: 900,
   };
 }
