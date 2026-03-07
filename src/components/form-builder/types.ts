@@ -68,6 +68,7 @@ export interface FormSchema {
   submitButton: SubmitButtonConfig;
   fields: FormFieldConfig[];
   routingRules: RoutingRule[];
+  formWidth: number; // px, e.g. 900
 }
 
 export const FIELD_LIBRARY: { type: FieldType; label: string; icon: string; category: 'input' | 'selection' | 'layout' }[] = [
@@ -124,5 +125,6 @@ export function createDefaultSchema(): FormSchema {
     },
     fields: [],
     routingRules: [],
+    formWidth: 900,
   };
 }

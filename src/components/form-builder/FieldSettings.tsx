@@ -13,12 +13,14 @@ interface FieldSettingsProps {
   header: FormHeader;
   background: FormBackground;
   submitButton: SubmitButtonConfig;
+  formWidth: number;
   onUpdateField: (updates: Partial<FormFieldConfig>) => void;
   onDeleteField: () => void;
   onDuplicateField: () => void;
   onUpdateHeader: (updates: Partial<FormHeader>) => void;
   onUpdateBackground: (updates: Partial<FormBackground>) => void;
   onUpdateSubmitButton: (updates: Partial<SubmitButtonConfig>) => void;
+  onUpdateFormWidth: (width: number) => void;
   activePanel: 'field' | 'header' | 'background' | 'submit';
   onSetActivePanel: (panel: 'field' | 'header' | 'background' | 'submit') => void;
 }
@@ -28,12 +30,14 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
   header,
   background,
   submitButton,
+  formWidth,
   onUpdateField,
   onDeleteField,
   onDuplicateField,
   onUpdateHeader,
   onUpdateBackground,
   onUpdateSubmitButton,
+  onUpdateFormWidth,
   activePanel,
   onSetActivePanel,
 }) => {
@@ -245,6 +249,23 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
 
         {activePanel === 'background' && (
           <>
+            <div className="space-y-2">
+              <Label className="text-xs">Form Width: {formWidth}px</Label>
+              <input
+                type="range"
+                min="400"
+                max="1200"
+                step="50"
+                value={formWidth}
+                onChange={e => onUpdateFormWidth(parseInt(e.target.value))}
+                className="w-full accent-primary"
+              />
+              <div className="flex justify-between text-[10px] text-muted-foreground">
+                <span>400px</span>
+                <span>1200px</span>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label className="text-xs">Background Type</Label>
               <Select value={background.type} onValueChange={(v: any) => onUpdateBackground({ type: v })}>
