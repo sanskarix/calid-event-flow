@@ -9,7 +9,7 @@ interface FormCanvasProps {
   header: FormHeader;
   background: FormBackground;
   submitButton: SubmitButtonConfig;
-  previewMode: 'desktop' | 'mobile';
+  formWidth: number;
   onSelectField: (id: string | null) => void;
   onReorderField: (fromIndex: number, toIndex: number) => void;
   onDropNewField: (type: string, index?: number) => void;
