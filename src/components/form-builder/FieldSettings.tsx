@@ -13,12 +13,14 @@ interface FieldSettingsProps {
   header: FormHeader;
   background: FormBackground;
   submitButton: SubmitButtonConfig;
+  formWidth: number;
   onUpdateField: (updates: Partial<FormFieldConfig>) => void;
   onDeleteField: () => void;
   onDuplicateField: () => void;
   onUpdateHeader: (updates: Partial<FormHeader>) => void;
   onUpdateBackground: (updates: Partial<FormBackground>) => void;
   onUpdateSubmitButton: (updates: Partial<SubmitButtonConfig>) => void;
+  onUpdateFormWidth: (width: number) => void;
   activePanel: 'field' | 'header' | 'background' | 'submit';
   onSetActivePanel: (panel: 'field' | 'header' | 'background' | 'submit') => void;
 }
