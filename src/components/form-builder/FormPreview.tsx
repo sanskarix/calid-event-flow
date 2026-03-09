@@ -8,16 +8,17 @@ interface FormPreviewProps {
   onClose: () => void;
 }
 
-const underlineBase = 'w-full bg-transparent border-0 border-b border-border/60 rounded-none px-0 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-b-2 focus:border-foreground';
+const underlineClass = 'w-full bg-transparent border-0 border-b border-[#d6d6d6] rounded-none px-0 py-2.5 text-sm text-foreground outline-none shadow-none transition-colors focus:border-b-2 focus:border-foreground placeholder:text-muted-foreground';
 const defaultBase = 'w-full h-10 px-3 rounded-lg border border-border bg-background text-sm';
 
-const UnderlineWrapper: React.FC<{ label: string; required?: boolean; children: React.ReactNode; rightIcon?: React.ReactNode }> = ({ label, required, children, rightIcon }) => (
-  <div className="relative pt-5">
-    <label className="absolute top-0 left-0 text-xs text-muted-foreground font-medium pointer-events-none">
-      {label}{required && <span className="text-destructive ml-0.5">*</span>}
-    </label>
-    {children}
-    {rightIcon && <div className="absolute right-0 bottom-2.5 text-muted-foreground pointer-events-none">{rightIcon}</div>}
+const UnderlineField: React.FC<{ placeholder: string; rightIcon?: React.ReactNode; isTextarea?: boolean }> = ({ placeholder, rightIcon, isTextarea }) => (
+  <div className="relative">
+    {isTextarea ? (
+      <textarea placeholder={placeholder} rows={2} className={`${underlineClass} resize-none`} />
+    ) : (
+      <input type="text" placeholder={placeholder} className={underlineClass} />
+    )}
+    {rightIcon && <div className="absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">{rightIcon}</div>}
   </div>
 );
 
@@ -30,62 +31,33 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
   if (schema.background.type === 'color') bgStyle.backgroundColor = schema.background.color;
 
   const renderField = (field: FormFieldConfig) => {
-    const inputClass = isUnderline ? underlineBase : defaultBase;
+    const inputClass = isUnderline ? underlineClass : defaultBase;
+    const placeholderLabel = (field.label || 'Untitled') + (field.required ? '*' : '');
 
     switch (field.type) {
       case 'text':
       case 'email':
       case 'phone':
-        if (isUnderline) {
-          return (
-            <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
-              <input type="text" placeholder={field.placeholder} className={inputClass} />
-            </UnderlineWrapper>
-          );
-        }
+        if (isUnderline) return <UnderlineField placeholder={field.placeholder || placeholderLabel} />;
         return <input type={field.type === 'text' ? 'text' : field.type} placeholder={field.placeholder} className={inputClass} />;
 
       case 'textarea':
-        if (isUnderline) {
-          return (
-            <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
-              <textarea placeholder={field.placeholder} rows={2} className={`${underlineBase} resize-none`} />
-            </UnderlineWrapper>
-          );
-        }
+        if (isUnderline) return <UnderlineField placeholder={field.placeholder || placeholderLabel} isTextarea />;
         return <textarea placeholder={field.placeholder} rows={3} className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm resize-none" />;
 
       case 'date':
-        if (isUnderline) {
-          return (
-            <UnderlineWrapper label={field.label || 'Date'} required={field.required} rightIcon={<Calendar className="h-4 w-4" />}>
-              <input type="text" placeholder="Select date" className={inputClass} />
-            </UnderlineWrapper>
-          );
-        }
+        if (isUnderline) return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<Calendar className="h-4 w-4" />} />;
         return <input type="date" className={inputClass} />;
 
       case 'time':
-        if (isUnderline) {
-          return (
-            <UnderlineWrapper label={field.label || 'Time'} required={field.required} rightIcon={<Clock className="h-4 w-4" />}>
-              <input type="text" placeholder="Select time" className={inputClass} />
-            </UnderlineWrapper>
-          );
-        }
+        if (isUnderline) return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<Clock className="h-4 w-4" />} />;
         return <input type="time" className={inputClass} />;
 
       case 'file':
         return <div className="w-full h-20 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">Click or drag to upload</div>;
 
       case 'dropdown':
-        if (isUnderline) {
-          return (
-            <UnderlineWrapper label={field.label || 'Select'} required={field.required} rightIcon={<ChevronDown className="h-4 w-4" />}>
-              <input type="text" placeholder={field.placeholder || 'Select...'} className={inputClass} />
-            </UnderlineWrapper>
-          );
-        }
+        if (isUnderline) return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<ChevronDown className="h-4 w-4" />} />;
         return (
           <select className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm">
             <option>{field.placeholder || 'Select...'}</option>
@@ -124,7 +96,6 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
     }
   };
 
-  // Build rows
   const rows: FormFieldConfig[][] = [];
   let currentRow: FormFieldConfig[] = [];
   let cols = 0;
@@ -190,10 +161,7 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
               </div>
             )}
 
-            <div
-              className="mx-auto bg-card shadow-lg border border-border"
-              style={formCardStyle}
-            >
+            <div className="mx-auto bg-card shadow-lg border border-border" style={formCardStyle}>
               <div className="space-y-6">
                 {rows.map((row, ri) => (
                   <div key={ri} className="flex gap-4">
@@ -215,10 +183,7 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
                 ))}
 
                 <div className={`flex pt-4 ${submitAlignClass}`}>
-                  <Button
-                    className={`${schema.submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11`}
-                    style={btnStyle}
-                  >
+                  <Button className={`${schema.submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11`} style={btnStyle}>
                     {schema.submitButton.text || 'Submit'}
                   </Button>
                 </div>

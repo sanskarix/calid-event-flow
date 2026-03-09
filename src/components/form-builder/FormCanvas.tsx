@@ -48,31 +48,19 @@ const FieldRenderer: React.FC<{ field: FormFieldConfig; fieldStyle: FieldStyle }
 
     case 'textarea':
       if (isUnderline) {
-        return (
-          <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
-            <textarea disabled placeholder={field.placeholder || 'Enter text...'} rows={2} className={`${underlineBase} resize-none`} />
-          </UnderlineWrapper>
-        );
+        return <UnderlineField placeholder={field.placeholder || placeholderLabel} isTextarea />;
       }
       return <textarea placeholder={field.placeholder || 'Enter text...'} disabled rows={3} className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-muted-foreground resize-none" />;
 
     case 'date':
       if (isUnderline) {
-        return (
-          <UnderlineWrapper label={field.label || 'Date'} required={field.required} rightIcon={<Calendar className="h-4 w-4" />}>
-            <input type="text" disabled placeholder="Select date" className={inputClass} />
-          </UnderlineWrapper>
-        );
+        return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<Calendar className="h-4 w-4" />} />;
       }
       return <input type="date" disabled className={inputClass} />;
 
     case 'time':
       if (isUnderline) {
-        return (
-          <UnderlineWrapper label={field.label || 'Time'} required={field.required} rightIcon={<Clock className="h-4 w-4" />}>
-            <input type="text" disabled placeholder="Select time" className={inputClass} />
-          </UnderlineWrapper>
-        );
+        return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<Clock className="h-4 w-4" />} />;
       }
       return <input type="time" disabled className={inputClass} />;
 
@@ -85,11 +73,7 @@ const FieldRenderer: React.FC<{ field: FormFieldConfig; fieldStyle: FieldStyle }
 
     case 'dropdown':
       if (isUnderline) {
-        return (
-          <UnderlineWrapper label={field.label || 'Select'} required={field.required} rightIcon={<ChevronDownIcon className="h-4 w-4" />}>
-            <input type="text" disabled placeholder={field.placeholder || 'Select...'} className={inputClass} />
-          </UnderlineWrapper>
-        );
+        return <UnderlineField placeholder={field.placeholder || placeholderLabel} rightIcon={<ChevronDownIcon className="h-4 w-4" />} />;
       }
       return (
         <select disabled className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground">
