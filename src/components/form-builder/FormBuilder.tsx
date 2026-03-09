@@ -25,7 +25,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
 }) => {
   const [schema, setSchema] = useState<FormSchema>(initialSchema || createDefaultSchema());
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
-  const [settingsPanel, setSettingsPanel] = useState<'field' | 'header' | 'background' | 'submit'>('field');
+  const [settingsPanel, setSettingsPanel] = useState<'field' | 'header' | 'style' | 'submit'>('field');
   const { toast } = useToast();
 
   const selectedField = schema.fields.find(f => f.id === selectedFieldId) || null;
@@ -84,12 +84,10 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
 
   return (
     <div className="h-[calc(100vh-120px)] flex bg-muted/30">
-      {/* Left Panel - Field Library */}
       <div className="w-56 border-r border-border bg-card flex-shrink-0 overflow-hidden">
         <FieldLibrary onAddField={addField} />
       </div>
 
-      {/* Center Panel - Canvas */}
       <div className="flex-1 min-w-0 relative">
         <FormCanvas
           fields={schema.fields}
@@ -97,6 +95,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
           header={schema.header}
           background={schema.background}
           submitButton={schema.submitButton}
+          formStyle={schema.formStyle}
           formWidth={schema.formWidth}
           onSelectField={setSelectedFieldId}
           onReorderField={reorderField}
@@ -106,13 +105,13 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
         />
       </div>
 
-      {/* Right Panel - Settings */}
       <div className="w-64 border-l border-border bg-card flex-shrink-0 overflow-hidden">
         <FieldSettings
           field={selectedField}
           header={schema.header}
           background={schema.background}
           submitButton={schema.submitButton}
+          formStyle={schema.formStyle}
           formWidth={schema.formWidth}
           onUpdateField={updateField}
           onDeleteField={() => deleteField()}
@@ -120,6 +119,7 @@ export const FormBuilder: React.FC<FormBuilderProps> = ({
           onUpdateHeader={updates => setSchema(prev => ({ ...prev, header: { ...prev.header, ...updates } }))}
           onUpdateBackground={updates => setSchema(prev => ({ ...prev, background: { ...prev.background, ...updates } }))}
           onUpdateSubmitButton={updates => setSchema(prev => ({ ...prev, submitButton: { ...prev.submitButton, ...updates } }))}
+          onUpdateFormStyle={updates => setSchema(prev => ({ ...prev, formStyle: { ...prev.formStyle, ...updates } }))}
           onUpdateFormWidth={width => setSchema(prev => ({ ...prev, formWidth: width }))}
           activePanel={settingsPanel}
           onSetActivePanel={setSettingsPanel}

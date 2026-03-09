@@ -6,13 +6,14 @@ import { Switch } from '../ui/switch';
 import { Textarea } from '../ui/textarea';
 import { Trash2, Plus, X, Copy } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import type { FormFieldConfig, FormHeader, FormBackground, SubmitButtonConfig, TextAlignment } from './types';
+import type { FormFieldConfig, FormHeader, FormBackground, SubmitButtonConfig, TextAlignment, FormStyle } from './types';
 
 interface FieldSettingsProps {
   field: FormFieldConfig | null;
   header: FormHeader;
   background: FormBackground;
   submitButton: SubmitButtonConfig;
+  formStyle: FormStyle;
   formWidth: number;
   onUpdateField: (updates: Partial<FormFieldConfig>) => void;
   onDeleteField: () => void;
@@ -20,9 +21,10 @@ interface FieldSettingsProps {
   onUpdateHeader: (updates: Partial<FormHeader>) => void;
   onUpdateBackground: (updates: Partial<FormBackground>) => void;
   onUpdateSubmitButton: (updates: Partial<SubmitButtonConfig>) => void;
+  onUpdateFormStyle: (updates: Partial<FormStyle>) => void;
   onUpdateFormWidth: (width: number) => void;
-  activePanel: 'field' | 'header' | 'background' | 'submit';
-  onSetActivePanel: (panel: 'field' | 'header' | 'background' | 'submit') => void;
+  activePanel: 'field' | 'header' | 'style' | 'submit';
+  onSetActivePanel: (panel: 'field' | 'header' | 'style' | 'submit') => void;
 }
 
 export const FieldSettings: React.FC<FieldSettingsProps> = ({
@@ -30,6 +32,7 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
   header,
   background,
   submitButton,
+  formStyle,
   formWidth,
   onUpdateField,
   onDeleteField,
@@ -37,6 +40,7 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
   onUpdateHeader,
   onUpdateBackground,
   onUpdateSubmitButton,
+  onUpdateFormStyle,
   onUpdateFormWidth,
   activePanel,
   onSetActivePanel,
@@ -44,7 +48,7 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
   const tabs = [
     { key: 'field' as const, label: 'Field' },
     { key: 'header' as const, label: 'Header' },
-    { key: 'background' as const, label: 'Background' },
+    { key: 'style' as const, label: 'Style' },
     { key: 'submit' as const, label: 'Button' },
   ];
 
@@ -62,6 +66,10 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
         </Button>
       ))}
     </div>
+  );
+
+  const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+    <h4 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3 mt-2">{children}</h4>
   );
 
   return (
@@ -165,6 +173,31 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
                   </div>
                 </div>
 
+                {/* Checkbox direction */}
+                {field.type === 'checkbox' && (
+                  <div className="space-y-2">
+                    <Label className="text-xs">Checkbox Layout</Label>
+                    <div className="flex gap-1">
+                      <Button
+                        variant={(field.checkboxDirection || 'column') === 'row' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => onUpdateField({ checkboxDirection: 'row' })}
+                        className="flex-1 text-xs h-8"
+                      >
+                        Row
+                      </Button>
+                      <Button
+                        variant={(field.checkboxDirection || 'column') === 'column' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => onUpdateField({ checkboxDirection: 'column' })}
+                        className="flex-1 text-xs h-8"
+                      >
+                        Column
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
                 {field.options && (
                   <div className="space-y-2">
                     <Label className="text-xs">Options</Label>
@@ -247,8 +280,34 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
           </>
         )}
 
-        {activePanel === 'background' && (
+        {activePanel === 'style' && (
           <>
+            {/* Field Style */}
+            <SectionLabel>Field Appearance</SectionLabel>
+            <div className="space-y-2">
+              <Label className="text-xs">Field Style</Label>
+              <div className="flex gap-1">
+                <Button
+                  variant={formStyle.fieldStyle === 'default' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onUpdateFormStyle({ fieldStyle: 'default' })}
+                  className="flex-1 text-xs h-8"
+                >
+                  Default
+                </Button>
+                <Button
+                  variant={formStyle.fieldStyle === 'underline' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => onUpdateFormStyle({ fieldStyle: 'underline' })}
+                  className="flex-1 text-xs h-8"
+                >
+                  Underline
+                </Button>
+              </div>
+            </div>
+
+            {/* Form Container */}
+            <SectionLabel>Form Container</SectionLabel>
             <div className="space-y-2">
               <Label className="text-xs">Form Width: {formWidth}px</Label>
               <input
@@ -267,6 +326,60 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
             </div>
 
             <div className="space-y-2">
+              <Label className="text-xs">Background Color</Label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={formStyle.formBgColor || '#ffffff'}
+                  onChange={e => onUpdateFormStyle({ formBgColor: e.target.value })}
+                  className="w-9 h-9 rounded border border-border cursor-pointer"
+                />
+                <Input
+                  value={formStyle.formBgColor || ''}
+                  onChange={e => onUpdateFormStyle({ formBgColor: e.target.value })}
+                  placeholder="#FFFFFF"
+                  className="h-9 text-sm flex-1"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs">Border Radius: {formStyle.formBorderRadius}px</Label>
+              <input
+                type="range"
+                min="0"
+                max="30"
+                step="1"
+                value={formStyle.formBorderRadius}
+                onChange={e => onUpdateFormStyle({ formBorderRadius: parseInt(e.target.value) })}
+                className="w-full accent-primary"
+              />
+              <div className="flex justify-between text-[10px] text-muted-foreground">
+                <span>0px</span>
+                <span>30px</span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs">Padding: {formStyle.formPadding}px</Label>
+              <input
+                type="range"
+                min="20"
+                max="80"
+                step="2"
+                value={formStyle.formPadding}
+                onChange={e => onUpdateFormStyle({ formPadding: parseInt(e.target.value) })}
+                className="w-full accent-primary"
+              />
+              <div className="flex justify-between text-[10px] text-muted-foreground">
+                <span>20px</span>
+                <span>80px</span>
+              </div>
+            </div>
+
+            {/* Background */}
+            <SectionLabel>Page Background</SectionLabel>
+            <div className="space-y-2">
               <Label className="text-xs">Background Type</Label>
               <Select value={background.type} onValueChange={(v: any) => onUpdateBackground({ type: v })}>
                 <SelectTrigger className="h-9 text-sm">
@@ -283,12 +396,20 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
             {background.type === 'color' && (
               <div className="space-y-2">
                 <Label className="text-xs">Color</Label>
-                <Input
-                  value={background.color}
-                  onChange={e => onUpdateBackground({ color: e.target.value })}
-                  placeholder="hsl(210 40% 96%)"
-                  className="h-9 text-sm"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={background.color.startsWith('hsl') ? '#e2e8f0' : background.color || '#e2e8f0'}
+                    onChange={e => onUpdateBackground({ color: e.target.value })}
+                    className="w-9 h-9 rounded border border-border cursor-pointer"
+                  />
+                  <Input
+                    value={background.color}
+                    onChange={e => onUpdateBackground({ color: e.target.value })}
+                    placeholder="#E2E8F0"
+                    className="h-9 text-sm flex-1"
+                  />
+                </div>
               </div>
             )}
 
@@ -342,10 +463,65 @@ export const FieldSettings: React.FC<FieldSettingsProps> = ({
                 className="h-9 text-sm"
               />
             </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs">Background Color</Label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={submitButton.color || '#171717'}
+                  onChange={e => onUpdateSubmitButton({ color: e.target.value })}
+                  className="w-9 h-9 rounded border border-border cursor-pointer"
+                />
+                <Input
+                  value={submitButton.color || ''}
+                  onChange={e => onUpdateSubmitButton({ color: e.target.value })}
+                  placeholder="#171717"
+                  className="h-9 text-sm flex-1"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs">Text Color</Label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={submitButton.textColor || '#ffffff'}
+                  onChange={e => onUpdateSubmitButton({ textColor: e.target.value })}
+                  className="w-9 h-9 rounded border border-border cursor-pointer"
+                />
+                <Input
+                  value={submitButton.textColor || ''}
+                  onChange={e => onUpdateSubmitButton({ textColor: e.target.value })}
+                  placeholder="#FFFFFF"
+                  className="h-9 text-sm flex-1"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs">Border Radius: {submitButton.borderRadius}px</Label>
+              <input
+                type="range"
+                min="0"
+                max="40"
+                step="1"
+                value={submitButton.borderRadius}
+                onChange={e => onUpdateSubmitButton({ borderRadius: parseInt(e.target.value) })}
+                className="w-full accent-primary"
+              />
+              <div className="flex justify-between text-[10px] text-muted-foreground">
+                <span>0px</span>
+                <span>40px</span>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label className="text-xs">Alignment</Label>
               <AlignmentPicker value={submitButton.alignment} onChange={a => onUpdateSubmitButton({ alignment: a })} />
             </div>
+
             <div className="space-y-2">
               <Label className="text-xs">Width</Label>
               <div className="flex gap-1">
