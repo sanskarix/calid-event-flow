@@ -18,33 +18,31 @@ interface FormCanvasProps {
   onDuplicateField: (id: string) => void;
 }
 
-const underlineBase = 'w-full bg-transparent border-0 border-b border-border/60 rounded-none px-0 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-b-2 focus:border-foreground placeholder:text-transparent';
+const underlineClass = 'w-full bg-transparent border-0 border-b border-[#d6d6d6] rounded-none px-0 py-2.5 text-sm text-foreground outline-none shadow-none transition-colors focus:border-b-2 focus:border-foreground placeholder:text-muted-foreground';
 const defaultBase = 'w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground';
 
-const UnderlineWrapper: React.FC<{ label: string; required?: boolean; children: React.ReactNode; rightIcon?: React.ReactNode }> = ({ label, required, children, rightIcon }) => (
-  <div className="relative pt-5">
-    <label className="absolute top-0 left-0 text-xs text-muted-foreground font-medium pointer-events-none transition-all">
-      {label}{required && <span className="text-destructive ml-0.5">*</span>}
-    </label>
-    {children}
-    {rightIcon && <div className="absolute right-0 bottom-2.5 text-muted-foreground pointer-events-none">{rightIcon}</div>}
+const UnderlineField: React.FC<{ placeholder: string; rightIcon?: React.ReactNode; isTextarea?: boolean }> = ({ placeholder, rightIcon, isTextarea }) => (
+  <div className="relative">
+    {isTextarea ? (
+      <textarea disabled placeholder={placeholder} rows={2} className={`${underlineClass} resize-none`} />
+    ) : (
+      <input type="text" disabled placeholder={placeholder} className={underlineClass} />
+    )}
+    {rightIcon && <div className="absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">{rightIcon}</div>}
   </div>
 );
 
 const FieldRenderer: React.FC<{ field: FormFieldConfig; fieldStyle: FieldStyle }> = ({ field, fieldStyle }) => {
   const isUnderline = fieldStyle === 'underline';
-  const inputClass = isUnderline ? underlineBase : defaultBase;
+  const inputClass = isUnderline ? underlineClass : defaultBase;
+  const placeholderLabel = (field.label || 'Untitled') + (field.required ? '*' : '');
 
   switch (field.type) {
     case 'text':
     case 'email':
     case 'phone':
       if (isUnderline) {
-        return (
-          <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
-            <input type="text" disabled placeholder={field.placeholder || `Enter ${field.type}...`} className={inputClass} />
-          </UnderlineWrapper>
-        );
+        return <UnderlineField placeholder={field.placeholder || placeholderLabel} />;
       }
       return <input type="text" placeholder={field.placeholder || `Enter ${field.type}...`} disabled className={inputClass} />;
 
