@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { GripVertical, Trash2, Copy, ChevronUp, ChevronDown } from 'lucide-react';
+import { GripVertical, Trash2, Copy, ChevronUp, ChevronDown, Calendar, Clock, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { Button } from '../ui/button';
-import type { FormFieldConfig, FormHeader, FormBackground, SubmitButtonConfig } from './types';
+import type { FormFieldConfig, FormHeader, FormBackground, SubmitButtonConfig, FormStyle, FieldStyle } from './types';
 
 interface FormCanvasProps {
   fields: FormFieldConfig[];
@@ -9,6 +9,7 @@ interface FormCanvasProps {
   header: FormHeader;
   background: FormBackground;
   submitButton: SubmitButtonConfig;
+  formStyle: FormStyle;
   formWidth: number;
   onSelectField: (id: string | null) => void;
   onReorderField: (fromIndex: number, toIndex: number) => void;
@@ -17,56 +18,87 @@ interface FormCanvasProps {
   onDuplicateField: (id: string) => void;
 }
 
-const FieldRenderer: React.FC<{ field: FormFieldConfig }> = ({ field }) => {
+const underlineBase = 'w-full bg-transparent border-0 border-b border-border/60 rounded-none px-0 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-b-2 focus:border-foreground placeholder:text-transparent';
+const defaultBase = 'w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground';
+
+const UnderlineWrapper: React.FC<{ label: string; required?: boolean; children: React.ReactNode; rightIcon?: React.ReactNode }> = ({ label, required, children, rightIcon }) => (
+  <div className="relative pt-5">
+    <label className="absolute top-0 left-0 text-xs text-muted-foreground font-medium pointer-events-none transition-all">
+      {label}{required && <span className="text-destructive ml-0.5">*</span>}
+    </label>
+    {children}
+    {rightIcon && <div className="absolute right-0 bottom-2.5 text-muted-foreground pointer-events-none">{rightIcon}</div>}
+  </div>
+);
+
+const FieldRenderer: React.FC<{ field: FormFieldConfig; fieldStyle: FieldStyle }> = ({ field, fieldStyle }) => {
+  const isUnderline = fieldStyle === 'underline';
+  const inputClass = isUnderline ? underlineBase : defaultBase;
+
   switch (field.type) {
     case 'text':
     case 'email':
     case 'phone':
-      return (
-        <input
-          type={field.type === 'text' ? 'text' : field.type}
-          placeholder={field.placeholder || `Enter ${field.type}...`}
-          disabled
-          className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground"
-        />
-      );
+      if (isUnderline) {
+        return (
+          <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
+            <input type="text" disabled placeholder={field.placeholder || `Enter ${field.type}...`} className={inputClass} />
+          </UnderlineWrapper>
+        );
+      }
+      return <input type="text" placeholder={field.placeholder || `Enter ${field.type}...`} disabled className={inputClass} />;
+
     case 'textarea':
-      return (
-        <textarea
-          placeholder={field.placeholder || 'Enter text...'}
-          disabled
-          rows={3}
-          className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-muted-foreground resize-none"
-        />
-      );
+      if (isUnderline) {
+        return (
+          <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
+            <textarea disabled placeholder={field.placeholder || 'Enter text...'} rows={2} className={`${underlineBase} resize-none`} />
+          </UnderlineWrapper>
+        );
+      }
+      return <textarea placeholder={field.placeholder || 'Enter text...'} disabled rows={3} className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-muted-foreground resize-none" />;
+
     case 'date':
-      return (
-        <input
-          type="date"
-          disabled
-          className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground"
-        />
-      );
+      if (isUnderline) {
+        return (
+          <UnderlineWrapper label={field.label || 'Date'} required={field.required} rightIcon={<Calendar className="h-4 w-4" />}>
+            <input type="text" disabled placeholder="Select date" className={inputClass} />
+          </UnderlineWrapper>
+        );
+      }
+      return <input type="date" disabled className={inputClass} />;
+
     case 'time':
-      return (
-        <input
-          type="time"
-          disabled
-          className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground"
-        />
-      );
+      if (isUnderline) {
+        return (
+          <UnderlineWrapper label={field.label || 'Time'} required={field.required} rightIcon={<Clock className="h-4 w-4" />}>
+            <input type="text" disabled placeholder="Select time" className={inputClass} />
+          </UnderlineWrapper>
+        );
+      }
+      return <input type="time" disabled className={inputClass} />;
+
     case 'file':
       return (
         <div className="w-full h-20 rounded-lg border-2 border-dashed border-border bg-muted/30 flex items-center justify-center text-xs text-muted-foreground">
           Click or drag to upload
         </div>
       );
+
     case 'dropdown':
+      if (isUnderline) {
+        return (
+          <UnderlineWrapper label={field.label || 'Select'} required={field.required} rightIcon={<ChevronDownIcon className="h-4 w-4" />}>
+            <input type="text" disabled placeholder={field.placeholder || 'Select...'} className={inputClass} />
+          </UnderlineWrapper>
+        );
+      }
       return (
         <select disabled className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-muted-foreground">
           <option>{field.placeholder || 'Select...'}</option>
         </select>
       );
+
     case 'radio':
       return (
         <div className="space-y-2">
@@ -78,9 +110,11 @@ const FieldRenderer: React.FC<{ field: FormFieldConfig }> = ({ field }) => {
           ))}
         </div>
       );
-    case 'checkbox':
+
+    case 'checkbox': {
+      const dir = field.checkboxDirection || 'column';
       return (
-        <div className="space-y-2">
+        <div className={dir === 'row' ? 'flex flex-wrap gap-x-5 gap-y-2' : 'space-y-2'}>
           {(field.options || []).map((opt, i) => (
             <label key={i} className="flex items-center gap-2 text-sm text-foreground">
               <input type="checkbox" disabled className="accent-primary rounded" />
@@ -89,6 +123,8 @@ const FieldRenderer: React.FC<{ field: FormFieldConfig }> = ({ field }) => {
           ))}
         </div>
       );
+    }
+
     case 'divider':
       return <hr className="border-border my-2" />;
     case 'heading':
@@ -106,6 +142,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   header,
   background,
   submitButton,
+  formStyle,
   formWidth,
   onSelectField,
   onReorderField,
@@ -117,6 +154,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
   const isMobile = formWidth <= 500;
+  const isUnderline = formStyle.fieldStyle === 'underline';
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
@@ -127,10 +165,8 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   const handleDrop = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     setDragOverIndex(null);
-
     const fieldType = e.dataTransfer.getData('fieldType');
     const fromIndex = e.dataTransfer.getData('fieldIndex');
-
     if (fieldType) {
       onDropNewField(fieldType, index);
     } else if (fromIndex !== '') {
@@ -143,13 +179,10 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
     e.preventDefault();
     setDragOverIndex(null);
     const fieldType = e.dataTransfer.getData('fieldType');
-    if (fieldType) {
-      onDropNewField(fieldType);
-    }
+    if (fieldType) onDropNewField(fieldType);
     setDraggingIndex(null);
   };
 
-  // Group fields into rows for grid layout
   const renderFieldsGrid = () => {
     const rows: { fields: (FormFieldConfig & { originalIndex: number })[]; }[] = [];
     let currentRow: (FormFieldConfig & { originalIndex: number })[] = [];
@@ -157,7 +190,6 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
 
     fields.forEach((field, index) => {
       const cols = isMobile || field.layout === 'full' ? 12 : 6;
-
       if (currentCols + cols > 12) {
         if (currentRow.length > 0) rows.push({ fields: currentRow });
         currentRow = [{ ...field, originalIndex: index }];
@@ -166,14 +198,12 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
         currentRow.push({ ...field, originalIndex: index });
         currentCols += cols;
       }
-
       if (currentCols >= 12) {
         rows.push({ fields: currentRow });
         currentRow = [];
         currentCols = 0;
       }
     });
-
     if (currentRow.length > 0) rows.push({ fields: currentRow });
 
     return rows.map((row, rowIdx) => (
@@ -181,6 +211,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
         {row.fields.map(field => {
           const isSelected = selectedFieldId === field.id;
           const widthClass = isMobile || field.layout === 'full' ? 'w-full' : 'w-[calc(50%-0.5rem)]';
+          const showLabel = !isUnderline && !['divider', 'heading', 'paragraph'].includes(field.type);
 
           return (
             <div
@@ -195,9 +226,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
               <div
                 onClick={(e) => { e.stopPropagation(); onSelectField(field.id); }}
                 className={`p-3 rounded-lg border-2 transition-all cursor-pointer ${
-                  isSelected
-                    ? 'border-primary bg-primary/5 shadow-sm'
-                    : 'border-transparent hover:border-border'
+                  isSelected ? 'border-primary bg-primary/5 shadow-sm' : 'border-transparent hover:border-border'
                 } ${draggingIndex === field.originalIndex ? 'opacity-40' : ''}`}
               >
                 {/* Toolbar */}
@@ -218,10 +247,7 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
                   <button className="p-1 hover:bg-muted rounded" onClick={(e) => { e.stopPropagation(); onDuplicateField(field.id); }}>
                     <Copy className="h-3 w-3 text-muted-foreground" />
                   </button>
-                  <button
-                    className="p-1 hover:bg-destructive/10 rounded"
-                    onClick={(e) => { e.stopPropagation(); onDeleteField(field.id); }}
-                  >
+                  <button className="p-1 hover:bg-destructive/10 rounded" onClick={(e) => { e.stopPropagation(); onDeleteField(field.id); }}>
                     <Trash2 className="h-3 w-3 text-destructive" />
                   </button>
                   {field.originalIndex > 0 && (
@@ -236,15 +262,15 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
                   )}
                 </div>
 
-                {/* Label */}
-                {field.type !== 'divider' && field.type !== 'heading' && field.type !== 'paragraph' && (
+                {/* Label (default style only) */}
+                {showLabel && (
                   <label className="block text-sm font-medium text-foreground mb-1.5">
                     {field.label || 'Untitled'}
                     {field.required && <span className="text-destructive ml-0.5">*</span>}
                   </label>
                 )}
 
-                <FieldRenderer field={field} />
+                <FieldRenderer field={field} fieldStyle={formStyle.fieldStyle} />
 
                 {field.helpText && (
                   <p className="text-xs text-muted-foreground mt-1.5">{field.helpText}</p>
@@ -258,11 +284,21 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
   };
 
   const bgStyle: React.CSSProperties = {};
-  if (background.type === 'color') {
-    bgStyle.backgroundColor = background.color;
-  }
+  if (background.type === 'color') bgStyle.backgroundColor = background.color;
 
   const submitAlignClass = submitButton.alignment === 'left' ? 'justify-start' : submitButton.alignment === 'right' ? 'justify-end' : 'justify-center';
+
+  const btnStyle: React.CSSProperties = {};
+  if (submitButton.color) btnStyle.backgroundColor = submitButton.color;
+  if (submitButton.textColor) btnStyle.color = submitButton.textColor;
+  if (submitButton.borderRadius !== undefined) btnStyle.borderRadius = `${submitButton.borderRadius}px`;
+
+  const formCardStyle: React.CSSProperties = {
+    maxWidth: `${formWidth}px`,
+    borderRadius: `${formStyle.formBorderRadius}px`,
+    padding: `${formStyle.formPadding}px`,
+  };
+  if (formStyle.formBgColor) formCardStyle.backgroundColor = formStyle.formBgColor;
 
   return (
     <div
@@ -271,7 +307,6 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
       onDragOver={e => { e.preventDefault(); }}
       onDrop={handleCanvasDrop}
     >
-      {/* Background */}
       <div className="min-h-full relative" style={bgStyle}>
         {background.type === 'image' && background.imageUrl && (
           <>
@@ -282,43 +317,29 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
                 filter: background.blur ? `blur(${background.blur}px)` : undefined,
               }}
             />
-            <div
-              className="absolute inset-0"
-              style={{ backgroundColor: `rgba(0,0,0,${background.overlayOpacity})` }}
-            />
+            <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${background.overlayOpacity})` }} />
           </>
         )}
 
         <div className="relative z-10 py-12 px-4">
-          {/* Header */}
           {(header.title || header.subtitle) && (
-            <div
-              className="max-w-[900px] mx-auto mb-8"
-              style={{ textAlign: header.alignment }}
-            >
+            <div className="max-w-[900px] mx-auto mb-8" style={{ textAlign: header.alignment }}>
               {header.title && (
-                <h1
-                  className="text-2xl md:text-3xl font-bold mb-2"
-                  style={{ color: background.type !== 'none' ? header.color : undefined }}
-                >
+                <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: background.type !== 'none' ? header.color : undefined }}>
                   {header.title}
                 </h1>
               )}
               {header.subtitle && (
-                <p
-                  className="text-base opacity-80"
-                  style={{ color: background.type !== 'none' ? header.color : undefined }}
-                >
+                <p className="text-base opacity-80" style={{ color: background.type !== 'none' ? header.color : undefined }}>
                   {header.subtitle}
                 </p>
               )}
             </div>
           )}
 
-          {/* Form Card */}
           <div
-            className="mx-auto bg-card rounded-xl shadow-lg border border-border transition-all duration-300 p-10"
-            style={{ maxWidth: `${formWidth}px` }}
+            className="mx-auto bg-card shadow-lg border border-border transition-all duration-300"
+            style={formCardStyle}
           >
             {fields.length === 0 ? (
               <div className="py-16 text-center border-2 border-dashed border-border rounded-lg">
@@ -329,10 +350,10 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
               <div className="space-y-6">
                 {renderFieldsGrid()}
 
-                {/* Submit Button */}
                 <div className={`flex pt-4 ${submitAlignClass}`}>
                   <Button
-                    className={`${submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11 rounded-lg text-sm font-medium`}
+                    className={`${submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11 text-sm font-medium`}
+                    style={btnStyle}
                   >
                     {submitButton.text || 'Submit'}
                   </Button>
@@ -343,7 +364,6 @@ export const FormCanvas: React.FC<FormCanvasProps> = ({
         </div>
       </div>
 
-      {/* Drop zone at end */}
       {fields.length > 0 && (
         <div
           className="h-20"

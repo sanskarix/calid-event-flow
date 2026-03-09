@@ -1,43 +1,98 @@
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { X, Monitor, Smartphone } from 'lucide-react';
-import type { FormSchema } from './types';
+import { X, Monitor, Smartphone, Calendar, Clock, ChevronDown } from 'lucide-react';
+import type { FormSchema, FieldStyle, FormFieldConfig } from './types';
 
 interface FormPreviewProps {
   schema: FormSchema;
   onClose: () => void;
 }
 
+const underlineBase = 'w-full bg-transparent border-0 border-b border-border/60 rounded-none px-0 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-b-2 focus:border-foreground';
+const defaultBase = 'w-full h-10 px-3 rounded-lg border border-border bg-background text-sm';
+
+const UnderlineWrapper: React.FC<{ label: string; required?: boolean; children: React.ReactNode; rightIcon?: React.ReactNode }> = ({ label, required, children, rightIcon }) => (
+  <div className="relative pt-5">
+    <label className="absolute top-0 left-0 text-xs text-muted-foreground font-medium pointer-events-none">
+      {label}{required && <span className="text-destructive ml-0.5">*</span>}
+    </label>
+    {children}
+    {rightIcon && <div className="absolute right-0 bottom-2.5 text-muted-foreground pointer-events-none">{rightIcon}</div>}
+  </div>
+);
+
 export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => {
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
   const isMobile = device === 'mobile';
+  const isUnderline = schema.formStyle.fieldStyle === 'underline';
 
   const bgStyle: React.CSSProperties = {};
-  if (schema.background.type === 'color') {
-    bgStyle.backgroundColor = schema.background.color;
-  }
+  if (schema.background.type === 'color') bgStyle.backgroundColor = schema.background.color;
 
-  const renderField = (field: typeof schema.fields[0]) => {
+  const renderField = (field: FormFieldConfig) => {
+    const inputClass = isUnderline ? underlineBase : defaultBase;
+
     switch (field.type) {
       case 'text':
       case 'email':
       case 'phone':
-        return <input type={field.type === 'text' ? 'text' : field.type} placeholder={field.placeholder} className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm" />;
+        if (isUnderline) {
+          return (
+            <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
+              <input type="text" placeholder={field.placeholder} className={inputClass} />
+            </UnderlineWrapper>
+          );
+        }
+        return <input type={field.type === 'text' ? 'text' : field.type} placeholder={field.placeholder} className={inputClass} />;
+
       case 'textarea':
+        if (isUnderline) {
+          return (
+            <UnderlineWrapper label={field.label || 'Untitled'} required={field.required}>
+              <textarea placeholder={field.placeholder} rows={2} className={`${underlineBase} resize-none`} />
+            </UnderlineWrapper>
+          );
+        }
         return <textarea placeholder={field.placeholder} rows={3} className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm resize-none" />;
+
       case 'date':
-        return <input type="date" className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm" />;
+        if (isUnderline) {
+          return (
+            <UnderlineWrapper label={field.label || 'Date'} required={field.required} rightIcon={<Calendar className="h-4 w-4" />}>
+              <input type="text" placeholder="Select date" className={inputClass} />
+            </UnderlineWrapper>
+          );
+        }
+        return <input type="date" className={inputClass} />;
+
       case 'time':
-        return <input type="time" className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm" />;
+        if (isUnderline) {
+          return (
+            <UnderlineWrapper label={field.label || 'Time'} required={field.required} rightIcon={<Clock className="h-4 w-4" />}>
+              <input type="text" placeholder="Select time" className={inputClass} />
+            </UnderlineWrapper>
+          );
+        }
+        return <input type="time" className={inputClass} />;
+
       case 'file':
         return <div className="w-full h-20 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">Click or drag to upload</div>;
+
       case 'dropdown':
+        if (isUnderline) {
+          return (
+            <UnderlineWrapper label={field.label || 'Select'} required={field.required} rightIcon={<ChevronDown className="h-4 w-4" />}>
+              <input type="text" placeholder={field.placeholder || 'Select...'} className={inputClass} />
+            </UnderlineWrapper>
+          );
+        }
         return (
           <select className="w-full h-10 px-3 rounded-lg border border-border bg-background text-sm">
             <option>{field.placeholder || 'Select...'}</option>
             {field.options?.map((opt, i) => <option key={i}>{opt}</option>)}
           </select>
         );
+
       case 'radio':
         return (
           <div className="space-y-2">
@@ -46,14 +101,18 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
             ))}
           </div>
         );
-      case 'checkbox':
+
+      case 'checkbox': {
+        const dir = field.checkboxDirection || 'column';
         return (
-          <div className="space-y-2">
+          <div className={dir === 'row' ? 'flex flex-wrap gap-x-5 gap-y-2' : 'space-y-2'}>
             {field.options?.map((opt, i) => (
               <label key={i} className="flex items-center gap-2 text-sm"><input type="checkbox" className="accent-primary rounded" />{opt}</label>
             ))}
           </div>
         );
+      }
+
       case 'divider':
         return <hr className="border-border" />;
       case 'heading':
@@ -66,8 +125,8 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
   };
 
   // Build rows
-  const rows: (typeof schema.fields[number])[][] = [];
-  let currentRow: (typeof schema.fields[number])[] = [];
+  const rows: FormFieldConfig[][] = [];
+  let currentRow: FormFieldConfig[] = [];
   let cols = 0;
   schema.fields.forEach(f => {
     const c = isMobile || f.layout === 'full' ? 12 : 6;
@@ -84,6 +143,18 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
   if (currentRow.length) rows.push(currentRow);
 
   const submitAlignClass = schema.submitButton.alignment === 'left' ? 'justify-start' : schema.submitButton.alignment === 'right' ? 'justify-end' : 'justify-center';
+
+  const btnStyle: React.CSSProperties = {};
+  if (schema.submitButton.color) btnStyle.backgroundColor = schema.submitButton.color;
+  if (schema.submitButton.textColor) btnStyle.color = schema.submitButton.textColor;
+  if (schema.submitButton.borderRadius !== undefined) btnStyle.borderRadius = `${schema.submitButton.borderRadius}px`;
+
+  const formCardStyle: React.CSSProperties = {
+    maxWidth: isMobile ? '375px' : `${schema.formWidth}px`,
+    borderRadius: `${schema.formStyle.formBorderRadius}px`,
+    padding: isMobile ? '20px' : `${schema.formStyle.formPadding}px`,
+  };
+  if (schema.formStyle.formBgColor) formCardStyle.backgroundColor = schema.formStyle.formBgColor;
 
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col">
@@ -113,32 +184,41 @@ export const FormPreview: React.FC<FormPreviewProps> = ({ schema, onClose }) => 
 
           <div className="relative z-10 py-12 px-4">
             {(schema.header.title || schema.header.subtitle) && (
-              <div className={`max-w-[900px] mx-auto mb-8`} style={{ textAlign: schema.header.alignment }}>
+              <div className="max-w-[900px] mx-auto mb-8" style={{ textAlign: schema.header.alignment }}>
                 {schema.header.title && <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: schema.background.type !== 'none' ? schema.header.color : undefined }}>{schema.header.title}</h1>}
                 {schema.header.subtitle && <p className="text-base opacity-80" style={{ color: schema.background.type !== 'none' ? schema.header.color : undefined }}>{schema.header.subtitle}</p>}
               </div>
             )}
 
-            <div className={`mx-auto bg-card rounded-xl shadow-lg border border-border ${isMobile ? 'max-w-[375px] p-5' : 'max-w-[900px] p-10'}`}>
+            <div
+              className="mx-auto bg-card shadow-lg border border-border"
+              style={formCardStyle}
+            >
               <div className="space-y-6">
                 {rows.map((row, ri) => (
                   <div key={ri} className="flex gap-4">
-                    {row.map(field => (
-                      <div key={field.id} className={isMobile || field.layout === 'full' ? 'w-full' : 'w-[calc(50%-0.5rem)]'}>
-                        {!['divider', 'heading', 'paragraph'].includes(field.type) && (
-                          <label className="block text-sm font-medium mb-1.5">
-                            {field.label}{field.required && <span className="text-destructive ml-0.5">*</span>}
-                          </label>
-                        )}
-                        {renderField(field)}
-                        {field.helpText && <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>}
-                      </div>
-                    ))}
+                    {row.map(field => {
+                      const showLabel = !isUnderline && !['divider', 'heading', 'paragraph'].includes(field.type);
+                      return (
+                        <div key={field.id} className={isMobile || field.layout === 'full' ? 'w-full' : 'w-[calc(50%-0.5rem)]'}>
+                          {showLabel && (
+                            <label className="block text-sm font-medium mb-1.5">
+                              {field.label}{field.required && <span className="text-destructive ml-0.5">*</span>}
+                            </label>
+                          )}
+                          {renderField(field)}
+                          {field.helpText && <p className="text-xs text-muted-foreground mt-1">{field.helpText}</p>}
+                        </div>
+                      );
+                    })}
                   </div>
                 ))}
 
                 <div className={`flex pt-4 ${submitAlignClass}`}>
-                  <Button className={`${schema.submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11 rounded-lg`}>
+                  <Button
+                    className={`${schema.submitButton.width === 'full' ? 'w-full' : 'px-8'} h-11`}
+                    style={btnStyle}
+                  >
                     {schema.submitButton.text || 'Submit'}
                   </Button>
                 </div>

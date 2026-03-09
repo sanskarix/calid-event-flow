@@ -15,6 +15,10 @@ export type FieldType =
 
 export type FieldLayout = 'full' | 'half';
 
+export type FieldStyle = 'default' | 'underline';
+
+export type CheckboxDirection = 'row' | 'column';
+
 export type BackgroundType = 'none' | 'color' | 'image';
 
 export type TextAlignment = 'left' | 'center' | 'right';
@@ -28,7 +32,8 @@ export interface FormFieldConfig {
   helpText: string;
   layout: FieldLayout;
   options?: string[];
-  content?: string; // for heading/paragraph
+  content?: string;
+  checkboxDirection?: CheckboxDirection;
 }
 
 export interface FormHeader {
@@ -46,11 +51,20 @@ export interface FormBackground {
   blur: number;
 }
 
+export interface FormStyle {
+  fieldStyle: FieldStyle;
+  formBgColor: string;
+  formBorderRadius: number;
+  formPadding: number;
+}
+
 export interface SubmitButtonConfig {
   text: string;
   alignment: TextAlignment;
   color: string;
+  textColor: string;
   width: 'auto' | 'full';
+  borderRadius: number;
 }
 
 export interface RoutingRule {
@@ -65,10 +79,11 @@ export interface FormSchema {
   title: string;
   header: FormHeader;
   background: FormBackground;
+  formStyle: FormStyle;
   submitButton: SubmitButtonConfig;
   fields: FormFieldConfig[];
   routingRules: RoutingRule[];
-  formWidth: number; // px, e.g. 900
+  formWidth: number;
 }
 
 export const FIELD_LIBRARY: { type: FieldType; label: string; icon: string; category: 'input' | 'selection' | 'layout' }[] = [
@@ -98,6 +113,7 @@ export function createDefaultField(type: FieldType): FormFieldConfig {
     layout: type === 'textarea' || type === 'divider' || type === 'heading' || type === 'paragraph' ? 'full' : 'half',
     options: ['dropdown', 'radio', 'checkbox'].includes(type) ? ['Option 1', 'Option 2'] : undefined,
     content: type === 'heading' ? 'Section Title' : type === 'paragraph' ? 'Enter your description text here.' : undefined,
+    checkboxDirection: type === 'checkbox' ? 'column' : undefined,
   };
 }
 
@@ -117,11 +133,19 @@ export function createDefaultSchema(): FormSchema {
       overlayOpacity: 0.3,
       blur: 0,
     },
+    formStyle: {
+      fieldStyle: 'default',
+      formBgColor: '',
+      formBorderRadius: 12,
+      formPadding: 40,
+    },
     submitButton: {
       text: 'Submit',
       alignment: 'center',
       color: '',
+      textColor: '',
       width: 'full',
+      borderRadius: 8,
     },
     fields: [],
     routingRules: [],
