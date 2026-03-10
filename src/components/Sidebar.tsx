@@ -22,6 +22,10 @@ export const Sidebar = ({
     href: '/bookings',
     icon: CalendarCheck
   }, {
+    name: 'Calendar',
+    href: '/calendar',
+    icon: CalendarDays
+  }, {
     name: 'Availability',
     href: '/availability',
     icon: Clock2
