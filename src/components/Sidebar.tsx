@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing, Gift, Crown } from 'lucide-react';
+import { Users, Settings, Workflow, Home, CalendarCheck, ScrollText, Clock2, Blocks, ListTree, ChartNoAxesColumnIncreasing, Gift, Crown, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 interface SidebarProps {
   darkMode: boolean;
@@ -21,6 +21,10 @@ export const Sidebar = ({
     name: 'Bookings',
     href: '/bookings',
     icon: CalendarCheck
+  }, {
+    name: 'Calendar',
+    href: '/calendar',
+    icon: CalendarDays
   }, {
     name: 'Availability',
     href: '/availability',
