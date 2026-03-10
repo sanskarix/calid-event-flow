@@ -41,6 +41,7 @@ import { WorkflowBuilder } from "./pages/WorkflowBuilder";
 import { Apps } from "./pages/Apps";
 import Home from "./pages/Home";
 import { Insights } from "./pages/Insights";
+import UnifiedCalendar from "./pages/UnifiedCalendar";
 import ClaimPro from "./pages/ClaimPro";
 import ClaimUsername from "./pages/ClaimUsername";
 import { HeaderProvider } from "./contexts/HeaderContext";
