@@ -20,8 +20,6 @@ export function AddContactModal({ open, onOpenChange, contact, onSave }: AddCont
     name: '',
     email: '',
     phone: '',
-    company: '',
-    jobTitle: '',
     notes: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -32,12 +30,10 @@ export function AddContactModal({ open, onOpenChange, contact, onSave }: AddCont
         name: contact.name,
         email: contact.email,
         phone: contact.phone,
-        company: contact.company,
-        jobTitle: contact.jobTitle,
         notes: contact.notes,
       });
     } else {
-      setForm({ name: '', email: '', phone: '', company: '', jobTitle: '', notes: '' });
+      setForm({ name: '', email: '', phone: '', notes: '' });
     }
     setErrors({});
   }, [contact, open]);
@@ -47,7 +43,6 @@ export function AddContactModal({ open, onOpenChange, contact, onSave }: AddCont
     if (!form.name.trim()) e.name = 'Name is required';
     if (!form.email.trim()) e.email = 'Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email format';
-    if (!form.company.trim()) e.company = 'Company is required';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -103,36 +98,13 @@ export function AddContactModal({ open, onOpenChange, contact, onSave }: AddCont
             {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                placeholder="+1 (555) 000-0000"
-                value={form.phone}
-                onChange={e => updateField('phone', e.target.value)}
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="company">Company <span className="text-destructive">*</span></Label>
-              <Input
-                id="company"
-                placeholder="e.g. Acme Corp"
-                value={form.company}
-                onChange={e => updateField('company', e.target.value)}
-                className={errors.company ? 'border-destructive' : ''}
-              />
-              {errors.company && <p className="text-xs text-destructive">{errors.company}</p>}
-            </div>
-          </div>
-
           <div className="space-y-1.5">
-            <Label htmlFor="jobTitle">Job Title</Label>
+            <Label htmlFor="phone">Phone Number</Label>
             <Input
-              id="jobTitle"
-              placeholder="e.g. Product Manager"
-              value={form.jobTitle}
-              onChange={e => updateField('jobTitle', e.target.value)}
+              id="phone"
+              placeholder="+1 (555) 000-0000"
+              value={form.phone}
+              onChange={e => updateField('phone', e.target.value)}
             />
           </div>
 

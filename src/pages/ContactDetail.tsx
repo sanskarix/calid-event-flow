@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
-  ArrowLeft, Mail, Phone, Building2, Briefcase, Edit2, Trash2, Share2, CalendarPlus,
-  Video, Clock, CheckCircle2, XCircle, CalendarDays, StickyNote, Tag,
+  ArrowLeft, Mail, Phone, Edit2, Trash2, Share2, CalendarPlus,
+  Video, Clock, CheckCircle2, XCircle, CalendarDays, StickyNote,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,14 +21,6 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-
-const tagColors: Record<string, string> = {
-  client: 'bg-primary/10 text-primary border-primary/20',
-  prospect: 'bg-amber-50 text-amber-700 border-amber-200',
-  partner: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  enterprise: 'bg-violet-50 text-violet-700 border-violet-200',
-  tech: 'bg-sky-50 text-sky-700 border-sky-200',
-};
 
 const statusConfig = {
   upcoming: { icon: CalendarDays, className: 'text-primary', label: 'Upcoming' },
@@ -94,18 +86,6 @@ export default function ContactDetail() {
                   <AvatarFallback className="text-lg bg-primary/10 text-primary font-semibold">{contact.avatar}</AvatarFallback>
                 </Avatar>
                 <h2 className="text-lg font-semibold">{contact.name}</h2>
-                {contact.jobTitle && <p className="text-sm text-muted-foreground">{contact.jobTitle}</p>}
-                <p className="text-sm text-muted-foreground">{contact.company}</p>
-
-                {contact.tags.length > 0 && (
-                  <div className="flex gap-1 mt-3 flex-wrap justify-center">
-                    {contact.tags.map(tag => (
-                      <Badge key={tag} variant="outline" className={`text-[10px] capitalize ${tagColors[tag] || ''}`}>
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <Separator className="my-4" />
@@ -121,33 +101,7 @@ export default function ContactDetail() {
                     <span>{contact.phone}</span>
                   </div>
                 )}
-                <div className="flex items-center gap-3 text-sm">
-                  <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span>{contact.company}</span>
-                </div>
-                {contact.jobTitle && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <Briefcase className="h-4 w-4 text-muted-foreground shrink-0" />
-                    <span>{contact.jobTitle}</span>
-                  </div>
-                )}
               </div>
-
-              {/* Custom fields */}
-              {Object.keys(contact.customFields).length > 0 && (
-                <>
-                  <Separator className="my-4" />
-                  <div className="space-y-2">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Custom Fields</p>
-                    {Object.entries(contact.customFields).map(([key, value]) => (
-                      <div key={key} className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{key}</span>
-                        <span className="font-medium">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
 
               <Separator className="my-4" />
 
