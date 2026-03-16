@@ -44,6 +44,8 @@ import { Insights } from "./pages/Insights";
 import UnifiedCalendar from "./pages/UnifiedCalendar";
 import ClaimPro from "./pages/ClaimPro";
 import ClaimUsername from "./pages/ClaimUsername";
+import Contacts from "./pages/Contacts";
+import ContactDetail from "./pages/ContactDetail";
 import { HeaderProvider } from "./contexts/HeaderContext";
 
 const queryClient = new QueryClient();
@@ -78,6 +80,8 @@ const App = () => (
               <Route path="workflows/:workflowId/edit" element={<WorkflowBuilder />} />
               <Route path="insights" element={<Insights />} />
               <Route path="calendar" element={<UnifiedCalendar />} />
+              <Route path="contacts" element={<Contacts />} />
+              <Route path="contacts/:id" element={<ContactDetail />} />
               <Route path="claim-pro" element={<ClaimPro />} />
             </Route>
             
