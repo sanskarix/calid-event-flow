@@ -80,6 +80,8 @@ const App = () => (
               <Route path="workflows/:workflowId/edit" element={<WorkflowBuilder />} />
               <Route path="insights" element={<Insights />} />
               <Route path="calendar" element={<UnifiedCalendar />} />
+              <Route path="contacts" element={<Contacts />} />
+              <Route path="contacts/:id" element={<ContactDetail />} />
               <Route path="claim-pro" element={<ClaimPro />} />
             </Route>
             

@@ -57,8 +57,8 @@ export default function Contacts() {
   const [scheduleContact, setScheduleContact] = useState<Contact | null>(null);
 
   useEffect(() => {
-    setHeaderConfig({ title: 'Contacts', description: 'Manage your contacts and schedule meetings' });
-  }, [setHeaderConfig]);
+    setHeaderMeta({ title: 'Contacts', description: 'Manage your contacts and schedule meetings' });
+  }, [setHeaderMeta]);
 
   const companies = useMemo(() => [...new Set(contacts.map(c => c.company))].sort(), [contacts]);
   const allTags = useMemo(() => [...new Set(contacts.flatMap(c => c.tags))].sort(), [contacts]);
