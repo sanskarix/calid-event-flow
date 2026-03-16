@@ -20,7 +20,7 @@ import { mockContacts, type Contact } from '@/data/contactsData';
 import { AddContactModal } from '@/components/contacts/AddContactModal';
 import { ShareAvailabilityModal } from '@/components/contacts/ShareAvailabilityModal';
 import { ScheduleMeetingModal } from '@/components/contacts/ScheduleMeetingModal';
-import { useHeaderConfig } from '@/contexts/HeaderContext';
+import { useHeader } from '@/contexts/HeaderContext';
 import { useEffect } from 'react';
 
 type SortKey = 'name' | 'company' | 'lastMeeting' | 'createdAt';
