@@ -39,7 +39,7 @@ const tagColors: Record<string, string> = {
 export default function Contacts() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { setHeaderConfig } = useHeaderConfig();
+  const { setHeaderMeta } = useHeader();
 
   const [contacts, setContacts] = useState<Contact[]>(mockContacts);
   const [search, setSearch] = useState('');
