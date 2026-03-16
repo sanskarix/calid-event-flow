@@ -44,6 +44,8 @@ import { Insights } from "./pages/Insights";
 import UnifiedCalendar from "./pages/UnifiedCalendar";
 import ClaimPro from "./pages/ClaimPro";
 import ClaimUsername from "./pages/ClaimUsername";
+import Contacts from "./pages/Contacts";
+import ContactDetail from "./pages/ContactDetail";
 import { HeaderProvider } from "./contexts/HeaderContext";
 
 const queryClient = new QueryClient();
