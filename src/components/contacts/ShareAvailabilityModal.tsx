@@ -130,7 +130,7 @@ export function ShareAvailabilityModal({ open, onOpenChange, contact }: ShareAva
               <div className="flex gap-2">
                 <Input value={bookingLink} readOnly className="bg-muted text-xs" />
                 <Button variant="outline" size="icon" onClick={handleCopy}>
-                  {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                  {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
                 </Button>
               </div>
             </div>
