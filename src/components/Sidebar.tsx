@@ -26,6 +26,10 @@ export const Sidebar = ({
     href: '/calendar',
     icon: CalendarDays
   }, {
+    name: 'Contacts',
+    href: '/contacts',
+    icon: Contact
+  }, {
     name: 'Availability',
     href: '/availability',
     icon: Clock2
